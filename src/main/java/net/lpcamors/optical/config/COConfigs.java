@@ -1,7 +1,8 @@
 package net.lpcamors.optical.config;
 
 
-import com.simibubi.create.foundation.config.ConfigBase;
+import com.simibubi.create.api.stress.BlockStressValues;
+import net.createmod.catnip.config.ConfigBase;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -20,11 +21,14 @@ public class COConfigs {
     private static final Map<ModConfig.Type, ConfigBase> CONFIGS = new EnumMap<>(ModConfig.Type.class);
 
     private static COCServer server;
+    private static COCClient client;
 
     public static COCServer server(){
         return server;
     }
-
+    public static COCClient client(){
+        return client;
+    }
     private static <T extends ConfigBase> T register(Supplier<T> factory, ModConfig.Type side) {
         Pair<T, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(builder -> {
             T config = factory.get();
@@ -40,11 +44,14 @@ public class COConfigs {
 
     public static void register(ModLoadingContext context) {
         server = register(COCServer::new, ModConfig.Type.SERVER);
+        client = register(COCClient::new, ModConfig.Type.CLIENT);
 
         for (Map.Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
             context.registerConfig(pair.getKey(), pair.getValue().specification);
 
-        //BlockStressValues.registerProvider(context.getActiveNamespace(), server().kinetics.stressValues);
+        COCStress stress = server().kinetics.stressValues;
+        BlockStressValues.IMPACTS.registerProvider(stress::getImpact);
+        BlockStressValues.CAPACITIES.registerProvider(stress::getCapacity);
     }
 
     @SubscribeEvent

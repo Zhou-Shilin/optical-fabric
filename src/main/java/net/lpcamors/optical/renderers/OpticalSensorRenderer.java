@@ -2,8 +2,8 @@ package net.lpcamors.optical.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.render.RenderTypes;
+import net.createmod.catnip.render.CachedBuffers;
 import net.lpcamors.optical.COPartialModels;
 import net.lpcamors.optical.blocks.optical_sensor.OpticalSensorBlock;
 import net.lpcamors.optical.blocks.optical_sensor.OpticalSensorBlockEntity;
@@ -27,7 +27,7 @@ public class OpticalSensorRenderer extends SafeBlockEntityRenderer<OpticalSensor
         if(color.equals(Vec3i.ZERO)) return;
         ms.pushPose();
 
-        CachedBufferer.partial(COPartialModels.OPTICAL_SENSOR_LAMP, blockState)
+        CachedBuffers.partial(COPartialModels.OPTICAL_SENSOR_LAMP, blockState)
                 .light(f ? LightTexture.FULL_BRIGHT : light)
                 .color(color.getX(), color.getY(), color.getZ(), 255)
                 .disableDiffuse()
@@ -38,11 +38,11 @@ public class OpticalSensorRenderer extends SafeBlockEntityRenderer<OpticalSensor
             return;
         }
 
-        CachedBufferer.partial(COPartialModels.OPTICAL_SENSOR_LAMP_GLOW, blockState)
+        CachedBuffers.partial(COPartialModels.OPTICAL_SENSOR_LAMP_GLOW, blockState)
                 .light(LightTexture.FULL_BRIGHT)
                 .color(color.getX(), color.getY(), color.getZ(), 255)
                 .disableDiffuse()
-                .renderInto(ms, bufferSource.getBuffer(RenderTypes.getAdditive()));
+                .renderInto(ms, bufferSource.getBuffer(RenderTypes.additive()));
 
         ms.popPose();
     }

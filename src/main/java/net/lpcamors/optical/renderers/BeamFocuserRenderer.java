@@ -8,10 +8,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.simibubi.create.content.kinetics.base.ShaftRenderer;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
-import com.simibubi.create.foundation.utility.AngleHelper;
-import com.simibubi.create.foundation.utility.Color;
+import net.createmod.catnip.math.AngleHelper;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.lpcamors.optical.COPartialModels;
 import net.lpcamors.optical.blocks.beam_focuser.BeamFocuserBlockEntity;
 import net.lpcamors.optical.blocks.optical_source.OpticalSourceBlock;
@@ -47,13 +46,14 @@ public class BeamFocuserRenderer extends ShaftRenderer<BeamFocuserBlockEntity> {
         if(be.processingTicks >= 5 && be.processingTicks <= be.getProcessDuration()){
             double angle = be.getAngle(partialTicks, radius, k, alpha);
             VertexConsumer vb = buffer.getBuffer(RenderType.translucentNoCrumbling());
-            SuperByteBuffer focusBeam = CachedBufferer.partial(COPartialModels.FOCUS_BEAM, blockState)
+            SuperByteBuffer focusBeam = CachedBuffers.partial(COPartialModels.FOCUS_BEAM, blockState)
                     .disableDiffuse()
 
                     .light(LightTexture.FULL_BRIGHT);
 
             VertexConsumer vb1 = buffer.getBuffer(getBeamRenderType());
-            SuperByteBuffer focusBeam1 = CachedBufferer.partial(COPartialModels.FOCUS_BEAM_GLOW, blockState)
+            SuperByteBuffer focusBeam1 = CachedBuffers.partial(COPartialModels.FOCUS_BEAM_GLOW, blockState)
+                    .center().scale(1.2F).uncenter()
                     .light(LightTexture.FULL_BRIGHT)
                     .disableDiffuse();
 
@@ -77,9 +77,9 @@ public class BeamFocuserRenderer extends ShaftRenderer<BeamFocuserBlockEntity> {
         float pivotX = 8F / 16f;
         float pivotY = 8f / 16f;
         float pivotZ = 8F / 16f;
-        buffer.rotateCentered(Direction.UP, (float) (AngleHelper.rad(AngleHelper.horizontalAngle(facing.getCounterClockWise())) - 1.F * Math.PI));
+        buffer.rotateCentered((float) (AngleHelper.rad(AngleHelper.horizontalAngle(facing.getCounterClockWise())) - 1.F * Math.PI), Direction.UP);
         buffer.translate(pivotX, pivotY, pivotZ);
-        buffer.rotate(facing, AngleHelper.rad(angle));
+        buffer.rotate(AngleHelper.rad(angle), facing);
         buffer.translate(-pivotX, -pivotY, -pivotZ);
         return buffer;
     }

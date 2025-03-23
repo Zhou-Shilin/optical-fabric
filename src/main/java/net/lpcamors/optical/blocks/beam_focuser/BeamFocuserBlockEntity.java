@@ -1,6 +1,6 @@
 package net.lpcamors.optical.blocks.beam_focuser;
 
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
@@ -11,14 +11,13 @@ import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.VecHelper;
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.lang.LangBuilder;
+import net.createmod.catnip.math.VecHelper;
 import net.lpcamors.optical.COMod;
 import net.lpcamors.optical.blocks.IBeamReceiver;
 import net.lpcamors.optical.blocks.optical_source.BeamHelper;
 import net.lpcamors.optical.data.COLang;
-import net.lpcamors.optical.recipes.AnimatedFocus;
 import net.lpcamors.optical.recipes.FocusingRecipe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -61,8 +60,10 @@ public class BeamFocuserBlockEntity extends KineticBlockEntity implements IHaveG
     @Override
     public void tick() {
         super.tick();
-        if(this.shouldUpdate()){
-            this.update();
+        if(this.level != null && !this.level.isClientSide){
+            if(this.shouldUpdate()){
+                this.update();
+            }
         }
 
         if(!this.isVirtual() && (this.speed == 0 || this.beamSourceInstance.optionalBeamProperties().isEmpty())){
@@ -72,34 +73,6 @@ public class BeamFocuserBlockEntity extends KineticBlockEntity implements IHaveG
             processingTicks--;
         }
 
-
-//        Optional<BeamHelper.BeamProperties> beamProperties = this.beamSourceInstance.optionalBeamProperties();
-//        if (processingTicks == -1 && (isVirtual() || !level.isClientSide()) && beamProperties.isPresent()) {
-//            BlockFocusingBehaviour.forEach(behaviour -> {
-//                if (customProcess != null)
-//                    return;
-//                if (behaviour.focus(level, worldPosition.below(2), this, this.beamSourceInstance.optionalBeamProperties(), true) > 0) {
-//                    processingTicks = PROCESSING_TICK;
-//                    customProcess = behaviour;
-//                    notifyUpdate();
-//                }
-//            });
-//        }
-
-//        if (processingTicks >= 0 && (this.speed != 0 && this.beamSourceInstance.optionalBeamProperties().isPresent())) {
-//            processingTicks--;
-//            if (processingTicks == 5 && customProcess != null) {
-//                int fillBlock = customProcess.focus(level, worldPosition.below(2), this, this.beamSourceInstance.optionalBeamProperties(), false);
-//                customProcess = null;
-//                if (fillBlock > 0) {
-//                    //tank.getPrimaryHandler()
-//                     //       .setFluid(FluidHelper.copyStackWithAmount(currentFluidInTank,
-//                     //               currentFluidInTank.getAmount() - fillBlock));
-//                    //sendSplash = true;
-//                    notifyUpdate();
-//                }
-//            }
-//        }
 
     }
     
@@ -117,7 +90,6 @@ public class BeamFocuserBlockEntity extends KineticBlockEntity implements IHaveG
                     velocity ~ don't always diverges, but it happens a lot(what do you expect?)
 
      
-     You can see a special case in @{@link AnimatedFocus#getAngleByTick(int, double, double, double)}
 
      -lpcamors(message to myself...)
      **/
@@ -159,6 +131,7 @@ public class BeamFocuserBlockEntity extends KineticBlockEntity implements IHaveG
     }
     public void update(){
         this.setChanged();
+        this.sendData();
 
     }
     public boolean changeState(BlockPos pos, BeamHelper.BeamProperties beamProperties){
@@ -261,11 +234,11 @@ public class BeamFocuserBlockEntity extends KineticBlockEntity implements IHaveG
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        Lang.builder("tooltip").translate(COMod.ID +".gui.goggles.beam_properties").forGoggles(tooltip);
+        new LangBuilder("create").translate(COMod.ID +".gui.goggles.beam_properties").forGoggles(tooltip);
 
         if(this.beamSourceInstance != null && this.beamSourceInstance.optionalBeamProperties().isPresent()){
-            Lang.text("").add(COLang.Prefixes.CREATE.translate(("create." + COMod.ID + ".gui.goggles.beam_type")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
-            Lang.text("").add(COLang.Prefixes.CREATE.translate(this.beamSourceInstance.optionalBeamProperties().get().beamType.getDescriptionId()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
+            CreateLang.text("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.beam_type")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
+            CreateLang.text("").add(COLang.Prefixes.CREATE.translate(this.beamSourceInstance.optionalBeamProperties().get().beamType.getDescriptionId()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
         }
 
         return super.addToGoggleTooltip(tooltip, isPlayerSneaking);

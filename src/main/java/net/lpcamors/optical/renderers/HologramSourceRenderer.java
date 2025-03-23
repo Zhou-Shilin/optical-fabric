@@ -1,6 +1,5 @@
 package net.lpcamors.optical.renderers;
 
-import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -8,13 +7,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.RenderTypes;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
+import dev.engine_room.flywheel.lib.transform.TransformStack;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.lpcamors.optical.COPartialModels;
 import net.lpcamors.optical.COUtils;
 import net.lpcamors.optical.blocks.hologram_source.HologramSourceBlockEntity;
 import net.lpcamors.optical.blocks.optical_source.BeamHelper;
+import net.lpcamors.optical.config.COConfigs;
 import net.lpcamors.optical.items.COItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -56,10 +56,10 @@ public class HologramSourceRenderer  extends SafeBlockEntityRenderer<HologramSou
         BeamHelper.BeamProperties beamProperties = be.getOptionalBeamProperties().get();
         Vec3i color = beamProperties.color;
         ms.pushPose();
-        SuperByteBuffer cube = CachedBufferer.partial(COPartialModels.HOLOGRAM_BEAM, state).centre().light(light)
+        SuperByteBuffer cube = CachedBuffers.partial(COPartialModels.HOLOGRAM_BEAM, state).center().light(light)
                 .color(color.getX(), color.getY(), color.getZ(), 255);
-        cube.unCentre().renderInto(ms, buffer.getBuffer(RenderType.translucent()));
-        cube.centre().scale(1.1F).unCentre().renderInto(ms, buffer.getBuffer(getBeamRenderType()));
+        cube.uncenter().renderInto(ms, buffer.getBuffer(RenderType.translucent()));
+        cube.center().scale(1.1F).uncenter().renderInto(ms, buffer.getBuffer(getBeamRenderType()));
         ms.popPose();
 
         ItemStack heldItem = be.getItemStack();
@@ -73,7 +73,7 @@ public class HologramSourceRenderer  extends SafeBlockEntityRenderer<HologramSou
         if(heldItem.is(Items.TRIDENT) || heldItem.is(Items.SPYGLASS)) radius *= 0.5;
         Vec3 vec3 = be.getProjectionBox().getCenter().subtract(Vec3.atLowerCornerOf(be.getBlockPos()));
         ms.pushPose();
-        TransformStack.cast(ms).translate(vec3).scale((float) (be.getConnectionLength() * radius));
+        TransformStack.of(ms).translate(vec3).scale((float) (be.getConnectionLength() * radius));
         BakedModel bakedmodel = itemRenderer.getModel(heldItem, be.getLevel(), null, 0);
         //ms.translate(-0.5, -0.5,-0.5);
         double ticks = 0.05D * (be.getLevel().getDayTime() + partialTicks);
@@ -87,16 +87,20 @@ public class HologramSourceRenderer  extends SafeBlockEntityRenderer<HologramSou
             rot *= -1;
         }
 
+        float normalAlpha = COConfigs.client().hologramDisplay.normalTransparency.getF();
+        float additiveAlpha = COConfigs.client().hologramDisplay.additiveTransparency.getF();
+        normalAlpha *= COConfigs.client().hologramDisplay.generalTransparency.getF();
+        additiveAlpha *= COConfigs.client().hologramDisplay.generalTransparency.getF();
 
         this.render(beamProperties, itemRenderer, heldItem, ItemDisplayContext.FIXED, false, ms, buffer, LightTexture.FULL_BRIGHT, overlay, bakedmodel,
-                buffer.getBuffer(RenderType.translucent()), 0.75F, rot, yOffset);
+                buffer.getBuffer(RenderType.translucent()), normalAlpha, rot, yOffset);
 
         ms.popPose();
         ms.pushPose();
-        TransformStack.cast(ms).translate(vec3).scale((float) (be.getConnectionLength() * radius * 1.1));//;
+        TransformStack.of(ms).translate(vec3).scale((float) (be.getConnectionLength() * radius * 1.1));//;
         BakedModel bakedmodel1 = itemRenderer.getModel(heldItem, be.getLevel(), null, 0);
         this.render(beamProperties, itemRenderer, heldItem, ItemDisplayContext.FIXED, false, ms, buffer, LightTexture.FULL_BRIGHT, overlay, bakedmodel1,
-                buffer.getBuffer(getBeamRenderType()), 1F, rot, yOffset);
+                buffer.getBuffer(getBeamRenderType()), additiveAlpha, rot, yOffset);
         ms.popPose();
 
     }
@@ -119,9 +123,9 @@ public class HologramSourceRenderer  extends SafeBlockEntityRenderer<HologramSou
             bakedModel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(ms, bakedModel, itemDisplayContext, p_115146_);
             ms.translate(-0.5F, -0.5F, -0.5F);
 
-            TransformStack.cast(ms)
+            TransformStack.of(ms)
                     .translate(0,yOffset,0)
-                    .rotateCentered(Direction.UP, (float) rotation)
+                    .rotateCentered((float) rotation, Direction.UP)
 
             ;//;
             if (!bakedModel.isCustomRenderer() && (!itemStack.is(Items.TRIDENT) || flag)) {
@@ -182,7 +186,7 @@ public class HologramSourceRenderer  extends SafeBlockEntityRenderer<HologramSou
         PoseStack.Pose posestack$pose = p_115163_.last();
         Vec3i color = beamProperties.color;
         for(BakedQuad bakedquad : p_115165_) {
-            p_115164_.putBulkData(posestack$pose, bakedquad, (float) (color.getX() / 255D), (float) (color.getY() / 255D), (float) (color.getZ() / 255D), 0.75F, p_115167_, p_115168_, true);
+            p_115164_.putBulkData(posestack$pose, bakedquad, (float) (color.getX() / 255D), (float) (color.getY() / 255D), (float) (color.getZ() / 255D), alpha, p_115167_, p_115168_, true);
         }
 
     }

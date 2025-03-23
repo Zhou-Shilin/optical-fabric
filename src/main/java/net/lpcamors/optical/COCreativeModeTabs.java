@@ -1,6 +1,5 @@
 package net.lpcamors.optical;
 
-import com.simibubi.create.foundation.utility.Components;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.lpcamors.optical.blocks.COBlocks;

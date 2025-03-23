@@ -1,10 +1,10 @@
 package net.lpcamors.optical.blocks.hologram_source;
 
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.content.equipment.goggles.IHaveHoveringInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.NBTHelper;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.lpcamors.optical.COUtils;
 import net.lpcamors.optical.blocks.IBeamReceiver;
 import net.lpcamors.optical.blocks.optical_source.BeamHelper;
@@ -15,13 +15,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.checkerframework.checker.units.qual.C;
 
 import javax.annotation.Nullable;
 import javax.swing.text.html.Option;
@@ -125,13 +123,12 @@ public class HologramSourceBlockEntity extends SmartBlockEntity implements IHave
     @Override
     public void tick() {
         super.tick();
-        if(!this.level.isClientSide){
-            //this.isController = this.getControllerPos().equals(this.getBlockPos());
-            //this.sendData();
+        if(!this.level.isClientSide) {
+            if(this.shouldUpdate()){
+                this.update();
+            }
         }
-        if(this.shouldUpdate()){
-            this.update();
-        }
+
 
 
     }
@@ -161,7 +158,9 @@ public class HologramSourceBlockEntity extends SmartBlockEntity implements IHave
     }
 
     public void update(){
+
         this.setChanged();
+        this.sendData();
     }
 
     public HologramSourceProfile getProfile() {
@@ -249,7 +248,7 @@ public class HologramSourceBlockEntity extends SmartBlockEntity implements IHave
 
     @Override
     protected void read(CompoundTag tag, boolean clientPacket) {
-
+        this.beamSourceInstance = IBeamReceiver.BeamSourceInstance.read(tag);
         HologramSourceProfile.read(tag).ifPresent(hologramSourceProfile -> {
             this.profile.update(hologramSourceProfile);
             this.isController = hologramSourceProfile.controllerPos.equals(this.getBlockPos());
@@ -260,7 +259,7 @@ public class HologramSourceBlockEntity extends SmartBlockEntity implements IHave
 
     @Override
     protected void write(CompoundTag tag, boolean clientPacket) {
-
+        this.beamSourceInstance.write(tag);
         this.profile.write(tag);
         super.write(tag, clientPacket);
     }

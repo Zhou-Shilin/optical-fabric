@@ -1,7 +1,9 @@
 package net.lpcamors.optical.blocks;
 
-import com.simibubi.create.content.kinetics.base.HorizontalHalfShaftInstance;
-import com.simibubi.create.content.kinetics.base.ShaftInstance;
+import com.simibubi.create.AllBlockEntityTypes;
+import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
+import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import net.lpcamors.optical.blocks.absorption_polarizing_filter.AbsorptionPolarizingFilterBlockEntity;
 import net.lpcamors.optical.blocks.beam_focuser.BeamFocuserBlockEntity;
@@ -14,22 +16,25 @@ import net.lpcamors.optical.blocks.beam_condenser.BeamCondenserBlockEntity;
 import net.lpcamors.optical.blocks.optical_source.OpticalSourceBlockEntity;
 import net.lpcamors.optical.blocks.thermal_optical_source.ThermalOpticalSourceBlockEntity;
 import net.lpcamors.optical.renderers.*;
+import net.lpcamors.optical.visual.MirrorVisual;
+import net.lpcamors.optical.visual.ReceptorVisual;
 
-import static com.simibubi.create.Create.REGISTRATE;
+import static net.lpcamors.optical.COMod.REGISTRATE;
+
 
 public class COBlockEntities {
 
     public static void initiate(){}
-
     public static final BlockEntityEntry<OpticalSourceBlockEntity> OPTICAL_SOURCE = REGISTRATE
             .blockEntity("optical_source", OpticalSourceBlockEntity::new)
-            .instance(() -> HorizontalHalfShaftInstance::new)
+
+            .visual(() -> OrientedRotatingVisual.backHorizontal(AllPartialModels.SHAFT_HALF))
             .validBlocks(COBlocks.OPTICAL_SOURCE)
             .renderer(() -> OpticalSourceRenderer::new)
             .register();
     public static final BlockEntityEntry<ThermalOpticalSourceBlockEntity> THERMAL_OPTICAL_SOURCE = REGISTRATE
             .blockEntity("thermal_optical_source", ThermalOpticalSourceBlockEntity::new)
-            .instance(() -> HorizontalHalfShaftInstance::new)
+            .visual(() -> OrientedRotatingVisual.backHorizontal(AllPartialModels.SHAFT_HALF))
             .validBlocks(COBlocks.THERMAL_OPTICAL_SOURCE)
             .renderer(() -> ThermalOpticalSourceRenderer::new)
             .register();
@@ -37,19 +42,19 @@ public class COBlockEntities {
 
     public static final BlockEntityEntry<OpticalReceptorBlockEntity> OPTICAL_RECEPTOR = REGISTRATE
             .blockEntity("optical_receptor", OpticalReceptorBlockEntity::speed)
-            .instance(() -> ShaftInstance::new)
+            .visual(() -> ReceptorVisual::new, false)
             .validBlocks(COBlocks.LIGHT_OPTICAL_RECEPTOR)
             .renderer(() -> OpticalReceptorRenderer::new)
             .register();
     public static final BlockEntityEntry<OpticalReceptorBlockEntity> CAPACITY_OPTICAL_RECEPTOR = REGISTRATE
             .blockEntity("optical_receptor_capacity", OpticalReceptorBlockEntity::capacity)
-            .instance(() -> ShaftInstance::new)
+            .visual(() -> ReceptorVisual::new, false)
             .validBlocks(COBlocks.HEAVY_OPTICAL_RECEPTOR)
             .renderer(() -> OpticalReceptorRenderer::new)
             .register();
     public static final BlockEntityEntry<EncasedMirrorBlockEntity> ENCASED_MIRROR = REGISTRATE
             .blockEntity("encased_mirror", EncasedMirrorBlockEntity::new)
-            .instance(() -> ShaftInstance::new)
+            .visual(() -> MirrorVisual::new, false)
             .validBlocks(COBlocks.ENCASED_MIRROR)
             .renderer(() -> EncasedMirrorRenderer::new)
             .register();
@@ -79,7 +84,7 @@ public class COBlockEntities {
 
     public static final BlockEntityEntry<BeamFocuserBlockEntity> BEAM_FOCUSER = REGISTRATE
             .blockEntity("beam_focuser", BeamFocuserBlockEntity::new)
-            .instance(() -> ShaftInstance::new)
+            .visual(() -> SingleAxisRotatingVisual::shaft, false)
             .validBlocks(COBlocks.BEAM_FOCUSER)
             .renderer(() -> BeamFocuserRenderer::new)
             .register();

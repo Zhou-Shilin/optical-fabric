@@ -1,12 +1,14 @@
 package net.lpcamors.optical.blocks;
 
-import com.simibubi.create.content.kinetics.BlockStressDefaults;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.ModelGen;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
-import com.simibubi.create.foundation.utility.Couple;
+import com.simibubi.create.infrastructure.config.CStress;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import net.createmod.catnip.data.Couple;
 import net.lpcamors.optical.COMod;
 import net.lpcamors.optical.blocks.absorption_polarizing_filter.AbsorptionPolarizingFilter;
 import net.lpcamors.optical.blocks.encased_mirror.EncasedMirrorBlock;
@@ -19,13 +21,13 @@ import net.lpcamors.optical.blocks.polarizing_beam_splitter_block.PolarizingBeam
 import net.lpcamors.optical.blocks.beam_condenser.BeamCondenserBlock;
 import net.lpcamors.optical.blocks.beam_focuser.BeamFocuserBlock;
 import net.lpcamors.optical.blocks.thermal_optical_source.ThermalOpticalSourceBlock;
+import net.lpcamors.optical.config.COCStress;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.material.MapColor;
 
 
 public class COBlocks {
-
     public static final BlockEntry<OpticalSourceBlock> OPTICAL_SOURCE =
             COMod.REGISTRATE.block("optical_source", OpticalSourceBlock::new)
                     .initialProperties(SharedProperties::stone)
@@ -35,7 +37,7 @@ public class COBlocks {
                     .addLayer(() -> RenderType::cutoutMipped)
                     .item()
                     .transform(ModelGen.customItemModel())
-                    .transform(BlockStressDefaults.setImpact(8.0))
+                    .transform(COCStress.setImpact(8.0))
                     .register();
 
     public static final BlockEntry<ThermalOpticalSourceBlock> THERMAL_OPTICAL_SOURCE =
@@ -47,7 +49,7 @@ public class COBlocks {
                     .addLayer(() -> RenderType::cutout)
                     .item()
                     .transform(ModelGen.customItemModel())
-                    .transform(BlockStressDefaults.setImpact(16.0))
+                    .transform(COCStress.setImpact(16.0))
                     .register();
 
 
@@ -60,8 +62,8 @@ public class COBlocks {
                     .addLayer(() -> RenderType::cutoutMipped)
                     .item()
                     .transform(ModelGen.customItemModel())
-                    .transform(BlockStressDefaults.setCapacity(8.0))
-                    .transform(BlockStressDefaults.setGeneratorSpeed(() -> Couple.create(0, 256)))
+                    .transform(COCStress.setCapacity(8.0))
+                    //.transform(BlockStressValues.setGeneratorSpeed(() -> Couple.create(0, 256)))
                     .register();
 
     public static final BlockEntry<OpticalReceptorBlock> HEAVY_OPTICAL_RECEPTOR =
@@ -73,8 +75,8 @@ public class COBlocks {
                     .addLayer(() -> RenderType::cutoutMipped)
                     .item()
                     .transform(ModelGen.customItemModel())
-                    .transform(BlockStressDefaults.setCapacity(24.0))
-                    .transform(BlockStressDefaults.setGeneratorSpeed(() -> Couple.create(0, 256)))
+                    .transform(COCStress.setCapacity(24.0))
+                    //.transform(BlockStressDefaults.setGeneratorSpeed(() -> Couple.create(0, 256)))
                     .register();
 
 
@@ -141,8 +143,7 @@ public class COBlocks {
                     .addLayer(() -> RenderType::solid)
                     .item()
                     .transform(ModelGen.customItemModel())
-                    .transform(BlockStressDefaults.setImpact(4.0))
-                    .transform(BlockStressDefaults.setGeneratorSpeed(() -> Couple.create(0, 256)))
+                    .transform(COCStress.setImpact(4.0))
                     .register();
     public static final BlockEntry<HologramSourceBlock> HOLOGRAM_SOURCE =
             COMod.REGISTRATE.block("hologram_source", HologramSourceBlock::new)

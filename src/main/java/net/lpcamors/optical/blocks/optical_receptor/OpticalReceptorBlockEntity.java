@@ -1,8 +1,7 @@
 package net.lpcamors.optical.blocks.optical_receptor;
 
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
-import com.simibubi.create.content.kinetics.transmission.sequencer.SequencedGearshiftScreen;
-import com.simibubi.create.foundation.utility.NBTHelper;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.lpcamors.optical.blocks.IBeamReceiver;
 import net.lpcamors.optical.blocks.optical_source.BeamHelper;
 import net.minecraft.core.BlockPos;
@@ -94,14 +93,16 @@ public class OpticalReceptorBlockEntity extends GeneratingKineticBlockEntity {
     public void tick() {
         super.tick();
         if(this.directionMap.keySet().isEmpty()) updateDirectionMap();
-        boolean f = false;
-        for(Direction direction : Direction.values()) {
-            if(this.shouldUpdate(direction)){
-                f = true;
+        if(this.level != null && !this.level.isClientSide){
+            boolean f = false;
+            for(Direction direction : Direction.values()) {
+                if(this.shouldUpdate(direction)){
+                    f = true;
+                }
             }
-        }
-        if(f){
-            this.update();
+            if(f){
+                this.update();
+            }
         }
     }
     public void updateDirectionMap(){
@@ -122,9 +123,11 @@ public class OpticalReceptorBlockEntity extends GeneratingKineticBlockEntity {
 
 
     public void update(){
+        if(this.level.isClientSide) return;
         this.initialBeamProperties = this.getResultantBeamProperties(this.getBlockState().getValue(OpticalReceptorBlock.FACING));
         updateGeneratedRotation();
         this.setChanged();
+        this.sendData();
     }
     public @Nullable BeamHelper.BeamProperties getResultantBeamProperties(Direction direction){
         List<BeamHelper.BeamProperties> beamProperties = new ArrayList<>();

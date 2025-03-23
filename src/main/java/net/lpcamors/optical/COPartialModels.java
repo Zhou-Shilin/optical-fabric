@@ -1,6 +1,6 @@
 package net.lpcamors.optical;
 
-import com.jozufozu.flywheel.core.PartialModel;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.minecraft.resources.ResourceLocation;
 
 public class COPartialModels {
@@ -21,7 +21,7 @@ public class COPartialModels {
             HOLOGRAM_BEAM = block("hologram_source/hologram_beam");
 
     private static PartialModel block(String path) {
-        return new PartialModel(new ResourceLocation(COMod.ID, "block/" + path));
+        return PartialModel.of(new ResourceLocation(COMod.ID, "block/" + path));
     }
 
 }

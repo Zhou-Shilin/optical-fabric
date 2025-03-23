@@ -2,7 +2,7 @@ package net.lpcamors.optical.blocks.beam_condenser;
 
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.lpcamors.optical.COShapes;
 import net.lpcamors.optical.blocks.COBlockEntities;
 import net.lpcamors.optical.blocks.IBeamReceiver;
@@ -76,7 +76,7 @@ public class BeamCondenserBlock extends HorizontalDirectionalBlock implements IB
         Direction direction = beamProperties.direction;
         BeamCondenserBlockEntity be = this.getBlockEntity(iBeamSource.getLevel(), lastPos);
         if(iBeamSource instanceof BeamCondenserBlockEntity || be == null || state.getValue(FACING).equals(direction.getOpposite())) return;
-
+        if(be.hasLevel() && be.getLevel().isClientSide) return;
         BlockPos pos = be.getBlockPos();
         if(be.changeState(direction, iBeamSource.getBlockPos(), beamProperties)){
             iBeamSource.addDependent(pos);

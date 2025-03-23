@@ -1,11 +1,10 @@
 package net.lpcamors.optical.blocks.beam_condenser;
 
 import com.mojang.datafixers.util.Pair;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+import net.createmod.catnip.lang.Lang;
 import net.lpcamors.optical.COMod;
 import net.lpcamors.optical.blocks.IBeamReceiver;
 import net.lpcamors.optical.blocks.IBeamSource;
@@ -57,16 +56,21 @@ public class BeamCondenserBlockEntity extends SmartBlockEntity implements IHaveG
     @Override
     public void tick() {
         super.tick();
-        boolean f = false;
         this.tickCount += 1;
-        for(Direction direction : Direction.values()) {
-            if(this.shouldUpdate(direction)){
-                f = true;
+
+        if(this.level != null && !this.level.isClientSide){
+            boolean f = false;
+            for(Direction direction : Direction.values()) {
+                if(this.shouldUpdate(direction)){
+                    f = true;
+                }
+            }
+            if(f){
+                this.update();
             }
         }
-        if(f){
-            this.update();
-        }
+
+
         this.toIBeamReceiverBlockPos = new ArrayList<>();
         this.beamPropertiesMap.clear();
         if(this.getInitialBeamProperties() != null && this.getInitialBeamProperties().intensity > 0){
@@ -77,8 +81,10 @@ public class BeamCondenserBlockEntity extends SmartBlockEntity implements IHaveG
     }
 
     public void update(){
+        if(this.level.isClientSide) return;
         this.initialBeamProperties = this.getResultantBeamProperties(this.getBlockState().getValue(BeamCondenserBlock.FACING));
         this.setChanged();
+        this.sendData();
     }
 
     public boolean shouldUpdate(Direction direction){
@@ -165,6 +171,7 @@ public class BeamCondenserBlockEntity extends SmartBlockEntity implements IHaveG
         });
         compound.put("IBeamReceiverBlockPosList", listTag);
         compound.put("IBeamSourceMap", listTag1);
+        if(this.initialBeamProperties != null) this.initialBeamProperties.write(compound);
 
     }
 
@@ -177,6 +184,7 @@ public class BeamCondenserBlockEntity extends SmartBlockEntity implements IHaveG
                 listTag.forEach(tag -> this.iBeamReceiverBlockPos.add(NbtUtils.readBlockPos((CompoundTag) tag)));
             }
         }
+        BeamHelper.BeamProperties.read(compound).ifPresent(beamProperties -> this.initialBeamProperties=beamProperties);
         if(compound.contains("IBeamSourceMap")){
             ListTag listTag = (ListTag) compound.get("IBeamSourceMap");
             if (listTag != null) {
@@ -199,15 +207,15 @@ public class BeamCondenserBlockEntity extends SmartBlockEntity implements IHaveG
         if(beamProperties != null){
             Lang.builder("tooltip").translate(COMod.ID +".gui.goggles.beam_properties").forGoggles(tooltip);
 
-            Lang.text("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.beam_type")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
-            Lang.text("").add(COLang.Prefixes.CREATE.translate(beamProperties.beamType.getDescriptionId()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
-            Lang.text("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.propagation_range")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
-            Lang.text("").add(Lang.text(" "+beamProperties.beamType.getRange()+" blocks").style(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
+            Lang.builder("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.beam_type")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
+            Lang.builder("").add(COLang.Prefixes.CREATE.translate(beamProperties.beamType.getDescriptionId()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
+            Lang.builder("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.propagation_range")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
+            Lang.builder("").add(Component.literal(" "+beamProperties.beamType.getRange()+" blocks").withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
 
             BeamHelper.BeamPolarization beamPolarization = beamProperties.beamPolarization;
 
-            Lang.text("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.polarization")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
-            Lang.text("").add(COLang.Prefixes.CREATE.translate(beamPolarization.getDescriptionId()).append(" " + beamPolarization.getsIcon()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
+            Lang.builder("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.polarization")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
+            Lang.builder("").add(COLang.Prefixes.CREATE.translate(beamPolarization.getDescriptionId()).append(" " + beamPolarization.getsIcon()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
         } else {
             return false;
         }

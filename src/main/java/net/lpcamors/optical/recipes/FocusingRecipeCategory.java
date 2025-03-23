@@ -2,20 +2,20 @@ package net.lpcamors.optical.recipes;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
-import com.simibubi.create.compat.jei.category.MillingCategory;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-import com.simibubi.create.foundation.utility.Lang;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.lpcamors.optical.data.COLang;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
+
 
 public class FocusingRecipeCategory extends CreateRecipeCategory<FocusingRecipe> {
 
@@ -24,6 +24,7 @@ public class FocusingRecipeCategory extends CreateRecipeCategory<FocusingRecipe>
     public FocusingRecipeCategory(Info<FocusingRecipe> info) {
         super(info);
     }
+
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, FocusingRecipe recipe, IFocusGroup focuses) {
@@ -49,11 +50,12 @@ public class FocusingRecipeCategory extends CreateRecipeCategory<FocusingRecipe>
                     .addSlot(RecipeIngredientRole.OUTPUT, single ? 141 : 135 + xOffset, 48 + yOffset)
                     .setBackground(getRenderedSlot(output), -1, -1)
                     .addItemStack(output.getStack())
-                    .addTooltipCallback(addStochasticTooltip(output));
+                    .addRichTooltipCallback(addStochasticTooltip(output));
 
             i++;
         }
     }
+
 
     @Override
     public Component getTitle() {
@@ -68,6 +70,8 @@ public class FocusingRecipeCategory extends CreateRecipeCategory<FocusingRecipe>
         focus.draw(graphics, getWidth() / 2 + 3, 34);
         ms.popPose();
     }
+
+
 
     protected void renderWidgets(GuiGraphics graphics, FocusingRecipe recipe, double mouseX, double mouseY) {
         AllGuiTextures.JEI_SHADOW.render(graphics, 81, 68);

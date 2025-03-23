@@ -1,9 +1,8 @@
 package net.lpcamors.optical.data;
 
-import com.simibubi.create.Create;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.LangBuilder;
+import net.createmod.catnip.lang.LangBuilder;
 import net.lpcamors.optical.COMod;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -89,7 +88,7 @@ public class COLang {
             if(this.pFix == null){
                 s = COMod.ID + "." + key;
             }
-            return Components.translatable(s, resolveBuilders(args));
+            return Component.translatable(s, resolveBuilders(args));
         }
 
 

@@ -1,10 +1,9 @@
 package net.lpcamors.optical.blocks.optical_sensor;
 
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+import net.createmod.catnip.lang.Lang;
 import net.lpcamors.optical.COMod;
 import net.lpcamors.optical.blocks.IBeamReceiver;
 import net.lpcamors.optical.blocks.optical_source.BeamHelper;
@@ -38,8 +37,10 @@ public class OpticalSensorBlockEntity extends SmartBlockEntity implements IHaveG
     @Override
     public void tick() {
         super.tick();
-        if(this.shouldUpdate()){
-            this.update();
+        if(!this.level.isClientSide) {
+            if(this.shouldUpdate()){
+                this.update();
+            }
         }
     }
 
@@ -51,9 +52,11 @@ public class OpticalSensorBlockEntity extends SmartBlockEntity implements IHaveG
     }
 
     public void update(){
+        if(this.level.isClientSide) return;
         this.setChanged();
         this.level.setBlock(this.getBlockPos(), this.getBlockState().setValue(BlockStateProperties.LIT, this.getSignal() > 0), 3);
         this.updateNeighbours(this.getBlockState(), this.level);
+        this.sendData();
     }
 
     public boolean changeState(BlockPos pos, BeamHelper.BeamProperties beamProperties){
@@ -93,8 +96,8 @@ public class OpticalSensorBlockEntity extends SmartBlockEntity implements IHaveG
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         Lang.builder("tooltip").translate(COMod.ID +".gui.goggles.optical_sensor").forGoggles(tooltip);
 
-        Lang.text("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.optical_sensor.mode")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
-        Lang.text("").add(COLang.Prefixes.CREATE.translate(this.getBlockState().getValue(OpticalSensorBlock.MODE).getDescriptionId()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
+        Lang.builder("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.optical_sensor.mode")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
+        Lang.builder("").add(COLang.Prefixes.CREATE.translate(this.getBlockState().getValue(OpticalSensorBlock.MODE).getDescriptionId()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
 
         return true;
     }

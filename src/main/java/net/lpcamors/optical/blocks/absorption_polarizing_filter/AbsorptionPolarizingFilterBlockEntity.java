@@ -1,10 +1,9 @@
 package net.lpcamors.optical.blocks.absorption_polarizing_filter;
 
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import net.lpcamors.optical.COMod;
 import net.lpcamors.optical.blocks.optical_source.BeamHelper;
 import net.lpcamors.optical.data.COLang;
@@ -36,14 +35,15 @@ public class AbsorptionPolarizingFilterBlockEntity extends SmartBlockEntity impl
         Direction direction = ((BlockHitResult) mc.hitResult).getDirection();
         Direction blockDirection = this.getBlockState().getValue(AbsorptionPolarizingFilter.FACING).getClockWise();
         if (direction.getAxis().equals(blockDirection.getAxis())) {
-            Lang.builder("tooltip").translate(COMod.ID + ".gui.goggles.absorption_polarizing_filter").forGoggles(tooltip);
+
+            CreateLang.builder("tooltip").translate(COMod.ID + ".gui.goggles.absorption_polarizing_filter").forGoggles(tooltip);
             BeamHelper.BeamPolarization beamPolarization = this.getBlockState().getValue(AbsorptionPolarizingFilter.POLARIZATION);
 
             if (beamPolarization.isDiagonal() && !direction.equals(blockDirection)) {
                 beamPolarization = beamPolarization.getNextRotated(2);
             }
-            Lang.text("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.polarization")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
-            Lang.text("").add(COLang.Prefixes.CREATE.translate(beamPolarization.getDescriptionId()).append(" " + beamPolarization.getsIcon()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
+            CreateLang.text("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.polarization")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
+            CreateLang.text("").add(COLang.Prefixes.CREATE.translate(beamPolarization.getDescriptionId()).append(" " + beamPolarization.getsIcon()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
 
         }
         return true;

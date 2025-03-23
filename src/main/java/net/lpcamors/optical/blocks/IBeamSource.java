@@ -4,10 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Axis;
-import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.render.RenderTypes;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
-import com.simibubi.create.foundation.utility.AngleHelper;
+import net.createmod.catnip.math.AngleHelper;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.lpcamors.optical.COMod;
 import net.lpcamors.optical.COPartialModels;
 import net.lpcamors.optical.COUtils;
@@ -131,7 +131,7 @@ public interface IBeamSource {
 
                 ms.mulPose(Axis.YP.rotation((float) (-Math.atan2(z, x) + Math.PI / 2)));
                 ms.mulPose(Axis.XP.rotation((float) (Math.atan2(f, y) - Math.PI / 2)));
-                VertexConsumer vertexconsumer = multiBufferSource.getBuffer(RenderTypes.getGlowingTranslucent(LASER_BEAM_LOCATION));
+                VertexConsumer vertexconsumer = multiBufferSource.getBuffer(RenderTypes.itemGlowingTranslucent());
                 int intensityMultiplier = 1 + (int) Math.floor(beamProperties.intensity / 16);
                 float t = (partialTicks + iBeamSource.getTickCount()) * intensityMultiplier;
                 float f2 = 0.0F - t * 1e-2F;
@@ -146,7 +146,7 @@ public interface IBeamSource {
                 for (int k = 0; k < 3 + intensityMultiplier; k++) {
                     if (k > 0) {
                         radius *= 1.2F;
-                        vertexconsumer = multiBufferSource.getBuffer(RenderTypes.getOutlineTranslucent(LASER_BEAM_LOCATION, true));
+                        vertexconsumer = multiBufferSource.getBuffer(RenderTypes.entityTranslucentBlockMipped());
                         alpha = (int) (alpha * 0.75F);
                     }
                     for (int j = 1; j <= 8; ++j) {
@@ -202,7 +202,7 @@ public interface IBeamSource {
                 float f = (float) end.subtract(start).length();
                 float f1 = (float) end.subtract(start).length();
 
-                SuperByteBuffer laser = CachedBufferer.partial(COPartialModels.LASER_BEAM, state)
+                SuperByteBuffer laser = CachedBuffers.partial(COPartialModels.LASER_BEAM, state)
                         .light(LightTexture.FULL_BRIGHT)
                         .disableDiffuse();
 
@@ -224,7 +224,7 @@ public interface IBeamSource {
                     scaleForVec(laser0, dir.scale(f).add(nDir));
                     scaleForVec(laser0, nDir.scale(radius).add(dir));
                     rotateDirection(laser0, direction);
-                    laser0.renderInto(ms, j == 0 ? buffer.getBuffer(RenderTypes.getAdditive()) : buffer.getBuffer(RenderType.translucentNoCrumbling()));
+                    laser0.renderInto(ms, j == 0 ? buffer.getBuffer(RenderTypes.additive()) : buffer.getBuffer(RenderType.translucentNoCrumbling()));
                 }
                 ms.popPose();
             }
@@ -235,14 +235,14 @@ public interface IBeamSource {
         }
 
         static void scaleForVec(SuperByteBuffer s, Vec3 vec3) {
-            s.centre().scale((float) vec3.x, (float) vec3.y, (float) vec3.z).unCentre();
+            s.center().scale((float) vec3.x, (float) vec3.y, (float) vec3.z).uncenter();
         }
 
         static void rotateDirection(SuperByteBuffer buffer, Direction direction) {
             float yRot = (float) (AngleHelper.horizontalAngle(direction) * Math.PI / 180f);
             float xRot = direction.getStepY() * (float) Math.PI / 2F;
-            buffer.rotateCentered(Direction.UP, yRot);
-            buffer.rotateCentered(Direction.EAST, xRot);
+            buffer.rotateCentered(yRot, Direction.UP);
+            buffer.rotateCentered(xRot, Direction.EAST);
 
         }
     }

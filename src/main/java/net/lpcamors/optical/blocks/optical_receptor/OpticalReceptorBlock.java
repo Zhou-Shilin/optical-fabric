@@ -73,7 +73,10 @@ public class OpticalReceptorBlock extends DirectionalAxisKineticBlock implements
                 ItemStack stack1 = stack.copy();
                 stack1.setCount(1);
                 f = opticalReceptorBlockEntity.addSensor(stack1, blockHitResult.getDirection());
-                if(f) stack.shrink(1);
+
+                if(f) {
+                    if(!player.isCreative()) stack.shrink(1);
+                }
                 return f ? InteractionResult.SUCCESS : InteractionResult.PASS;
             } else if(player.isShiftKeyDown() && player.getItemInHand(interactionHand).isEmpty()){
                 f = opticalReceptorBlockEntity.removeSensor(blockHitResult.getDirection(), Optional.of(player));
@@ -164,11 +167,11 @@ public class OpticalReceptorBlock extends DirectionalAxisKineticBlock implements
     @Override
     public void receive(IBeamSource iBeamSource, BlockState state, BlockPos lastPos, BeamHelper.BeamProperties beamProperties, int lastIndex) {
 
-        OpticalReceptorBlockEntity opticalLaserReceptorBlockEntity = this.getBlockEntity(iBeamSource.getLevel(), lastPos);
-        if(opticalLaserReceptorBlockEntity == null) return;
-
-        BlockPos pos = opticalLaserReceptorBlockEntity.getBlockPos();
-        if(opticalLaserReceptorBlockEntity.changeState(beamProperties.direction, iBeamSource.getBlockPos(), beamProperties)){
+        OpticalReceptorBlockEntity be = this.getBlockEntity(iBeamSource.getLevel(), lastPos);
+        if(be == null) return;
+        if(be.hasLevel() && be.getLevel().isClientSide) return;
+        BlockPos pos = be.getBlockPos();
+        if(be.changeState(beamProperties.direction, iBeamSource.getBlockPos(), beamProperties)){
             iBeamSource.addDependent(pos);
         }
     }

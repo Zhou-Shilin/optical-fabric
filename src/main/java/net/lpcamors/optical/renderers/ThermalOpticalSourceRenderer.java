@@ -2,12 +2,11 @@ package net.lpcamors.optical.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.AllPartialModels;
-import com.simibubi.create.content.fluids.drain.ItemDrainBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.lpcamors.optical.blocks.IBeamSource;
 import net.lpcamors.optical.blocks.optical_source.OpticalSourceBlock;
 import net.lpcamors.optical.blocks.thermal_optical_source.ThermalOpticalSourceBlockEntity;
@@ -56,8 +55,7 @@ public class ThermalOpticalSourceRenderer extends KineticBlockEntityRenderer<The
             float yOffset = yMin + (7.97F / 16f) * level;
             ms.pushPose();
             ms.translate(0, yOffset, 0);
-            FluidRenderer.renderFluidBox(fluidStack, min, yMin - yOffset, min, max, yMin, max, buffer, ms, light,
-                    false);
+            //FluidRenderer.renderFluidBox(fluidStack, min, yMin - yOffset, min, max, yMin, max, buffer, ms, light, false);
             ms.popPose();
         }
     }
@@ -76,7 +74,7 @@ public class ThermalOpticalSourceRenderer extends KineticBlockEntityRenderer<The
 
     @Override
     protected SuperByteBuffer getRotatedModel(ThermalOpticalSourceBlockEntity be, BlockState state) {
-        return CachedBufferer.partialFacing(AllPartialModels.SHAFT_HALF, state, state
+        return CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF, state, state
                 .getValue(OpticalSourceBlock.HORIZONTAL_FACING)
                 .getOpposite());
     }

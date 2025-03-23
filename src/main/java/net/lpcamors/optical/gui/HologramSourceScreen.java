@@ -1,24 +1,17 @@
 package net.lpcamors.optical.gui;
 
-import com.simibubi.create.AllPackets;
-import com.simibubi.create.content.kinetics.transmission.sequencer.ConfigureSequencedGearshiftPacket;
-import com.simibubi.create.content.kinetics.transmission.sequencer.Instruction;
-import com.simibubi.create.foundation.gui.AbstractSimiScreen;
-import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import com.simibubi.create.foundation.gui.widget.SelectionScrollInput;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+import net.createmod.catnip.gui.AbstractSimiScreen;
 import net.lpcamors.optical.blocks.hologram_source.HologramSourceBlockEntity;
 import net.lpcamors.optical.data.COLang;
 import net.lpcamors.optical.network.COPackets;
 import net.lpcamors.optical.network.ConfigureHologramSourcePacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 
 
@@ -58,8 +51,8 @@ public class HologramSourceScreen extends AbstractSimiScreen {
         confirmButton.withCallback(this::onClose);
         addRenderableWidget(confirmButton);
 
-        modeLabel = new Label(x + 29, y + 28, Components.immutableEmpty()).withShadow();
-        modeLabel.text = Components.immutableEmpty();
+        modeLabel = new Label(x + 29, y + 28, Component.empty()).withShadow();
+        modeLabel.text = Component.empty();
 
         modeArea =
                 new SelectionScrollInput(x + 22, y + 23, 109, 18).forOptions(HologramSourceBlockEntity.Mode.getComponents())

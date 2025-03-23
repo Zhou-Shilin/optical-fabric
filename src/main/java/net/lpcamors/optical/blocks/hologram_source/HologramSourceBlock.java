@@ -2,13 +2,11 @@ package net.lpcamors.optical.blocks.hologram_source;
 
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.content.kinetics.transmission.sequencer.SequencedGearshiftBlockEntity;
-import com.simibubi.create.content.kinetics.transmission.sequencer.SequencedGearshiftScreen;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.data.AssetLookup;
-import com.simibubi.create.foundation.gui.ScreenOpener;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
+import net.createmod.catnip.gui.ScreenOpener;
 import net.lpcamors.optical.COShapes;
 import net.lpcamors.optical.COUtils;
 import net.lpcamors.optical.blocks.COBlockEntities;
@@ -76,10 +74,10 @@ public class HologramSourceBlock extends HorizontalDirectionalBlock implements I
         HologramSourceBlockEntity be = this.getBlockEntity(iBeamSource.getLevel(), lastPos);
         if(!beamProperties.getType().equals(BeamHelper.BeamType.VISIBLE) || be == null || state.getValue(FACING).getAxis().equals(direction.getAxis())) return;
 
-        BlockPos pos = be.getBlockPos();
+        IBeamSource.propagateLinearBeamVar(iBeamSource, lastPos, beamProperties, lastIndex);
+        if(be.hasLevel() && be.getLevel().isClientSide) return;
         if(be.changeState(iBeamSource.getBlockPos(), beamProperties)){
-            iBeamSource.addDependent(pos);
-            IBeamSource.propagateLinearBeamVar(iBeamSource, lastPos, beamProperties, lastIndex);
+            iBeamSource.addDependent(be.getBlockPos());
 
         }
     }

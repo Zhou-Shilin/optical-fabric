@@ -52,12 +52,13 @@ public class BeamFocuserBlock extends HorizontalKineticBlock implements IWrencha
     }
     @Override
     public void receive(IBeamSource iBeamSource, BlockState state, BlockPos lastPos, BeamHelper.BeamProperties beamProperties, int lastIndex) {
+
         Direction direction = beamProperties.direction;
         if(!direction.equals(Direction.DOWN)){
             return;
         }
         BeamFocuserBlockEntity be = this.getBlockEntity(iBeamSource.getLevel(), lastPos);
-        if(be == null) return;
+        if(be == null || be.getLevel().isClientSide) return;
 
         BlockPos pos = be.getBlockPos();
         if(be.changeState(iBeamSource.getBlockPos(), beamProperties)){

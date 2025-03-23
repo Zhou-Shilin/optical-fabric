@@ -1,16 +1,14 @@
 package net.lpcamors.optical;
 
-import com.mojang.datafixers.types.Func;
 import com.mojang.logging.LogUtils;
-import com.simibubi.create.Create;
-import com.simibubi.create.foundation.ModFilePackResources;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
-import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.infrastructure.config.AllConfigs;
+import com.simibubi.create.foundation.pack.ModFilePackResources;
+import com.simibubi.create.foundation.ponder.CreatePonderPlugin;
+import net.createmod.catnip.lang.FontHelper;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.lpcamors.optical.blocks.COBlocks;
 import net.lpcamors.optical.blocks.COBlockEntities;
 import net.lpcamors.optical.config.COConfigs;
@@ -18,9 +16,10 @@ import net.lpcamors.optical.data.COLang;
 import net.lpcamors.optical.data.CODataGen;
 import net.lpcamors.optical.items.COItems;
 import net.lpcamors.optical.network.COPackets;
-import net.lpcamors.optical.ponder.COPonderIndex;
+import net.lpcamors.optical.ponder.COPonderPlugin;
 import net.lpcamors.optical.ponder.COPonderTags;
-import net.lpcamors.optical.recipes.FocusingRecipeParams;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
@@ -28,7 +27,6 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -54,7 +52,7 @@ public class COMod {
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(COMod.ID);
 
     static {
-        REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
+        REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
                 .andThen(TooltipModifier.mapNull(KineticStats.create(item))));
     }
 
@@ -90,9 +88,12 @@ public class COMod {
     private void commonSetup(final FMLCommonSetupEvent event) {}
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        COPonderIndex.initiate();
-        COPonderTags.initiate();
+        COPartialModels.initiate();
+        PonderIndex.addPlugin(new COPonderPlugin());
     }
+
+
+
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEventBus {
@@ -107,14 +108,25 @@ public class COMod {
                 }
                 IModFile modFile = modFileInfo.getFile();
                 event.addRepositorySource(consumer -> {
-                    Pack pack = Pack.readMetaAndCreate(loc("legacy_optical_copper").toString(), Components.literal("Create Optical Legacy Copper Compatibility"), false, id -> new ModFilePackResources(id, modFile, "resourcepacks/legacy_optical_copper"), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN);
+                    Pack pack = Pack.readMetaAndCreate(loc("legacy_optical_copper").toString(), Component.literal("Create Optical Legacy Copper Compatibility"), false, id -> new ModFilePackResources(id, modFile, "resourcepacks/legacy_optical_copper"), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN);
                     if (pack != null) {
                         consumer.accept(pack);
                     }
                 });
             }
         }
+
+        /*
+        @SubscribeEvent
+        public static void onServerStart(ServerStartingEvent event){
+            //FocusingRecipeParams.BeamTypeConditionProfile.initializeRecipes(event.getServer().overworld());
+        }
+
+         */
+
     }
+
+
 
 
 }

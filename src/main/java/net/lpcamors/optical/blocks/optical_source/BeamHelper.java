@@ -2,7 +2,7 @@ package net.lpcamors.optical.blocks.optical_source;
 
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.INamedIconOptions;
 import com.simibubi.create.foundation.gui.AllIcons;
-import com.simibubi.create.foundation.utility.NBTHelper;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.lpcamors.optical.CODamageSources;
 import net.lpcamors.optical.COMod;
 import net.lpcamors.optical.COIcons;
@@ -168,7 +168,7 @@ public class BeamHelper {
             tagInts.add(IntTag.valueOf(this.direction == null ? 0 : List.of(Direction.values()).indexOf(direction)));
             tagInts.add(IntTag.valueOf(this.forceVisibility ? 1 : 0));
             tagInts.add(IntTag.valueOf(this.forcePenetration ? 1 : 0));
-            tagInts.add(IntTag.valueOf(this.beamType.id));
+            tagInts.add(IntTag.valueOf(this.beamType.ordinal()));
             tagInts.add(IntTag.valueOf(this.spin ? 1 : 0));
 
             listTag.add(tagFloats);
@@ -186,9 +186,9 @@ public class BeamHelper {
                 ListTag tagInts = listTag.getList(1);
                 ListTag tagBoolean = listTag.getList(2);
                 ListTag color = listTag.getList(3);
-                BeamProperties beamProperties = new BeamProperties(((FloatTag) tagFloats.get(0)).getAsFloat(), BeamPolarization.values()[((IntTag)tagInts.get(0)).getAsInt()], NBTHelper.readVec3i(color), Direction.values()[tagInts.getInt(2)], tagInts.getInt(6) != 0, BeamType.values()[((IntTag)tagInts.get(5)).getAsInt()]);
-                beamProperties.forceVisibility = tagInts.getInt(3) == 1;
-                beamProperties.forcePenetration = tagInts.getInt(4) == 1;
+                BeamProperties beamProperties = new BeamProperties(((FloatTag) tagFloats.get(0)).getAsFloat(), BeamPolarization.values()[((IntTag)tagInts.get(0)).getAsInt()], NBTHelper.readVec3i(color), Direction.values()[tagInts.getInt(1)], tagInts.getInt(5) != 0, BeamType.values()[((IntTag)tagInts.get(4)).getAsInt()]);
+                beamProperties.forceVisibility = tagInts.getInt(2) == 1;
+                beamProperties.forcePenetration = tagInts.getInt(3) == 1;
                 return Optional.of(beamProperties);
             } catch (Exception e) {
                 e.fillInStackTrace();
@@ -327,7 +327,7 @@ public class BeamHelper {
         }
 
         public int getRange(){
-            return (4 - this.id) * 32;
+            return (4 - this.ordinal()) * 32;
         }
         public static BeamType getTypeBySpeed(float speed){
             BeamType beamType = RADIO;

@@ -124,7 +124,7 @@ public class FocusingRecipeParams extends ProcessingRecipeBuilder.ProcessingReci
 
     public enum BeamTypeConditionProfile {
         SMOKING(RecipeType.SMOKING, registryAccess -> recipe -> {
-            return FocusingRecipe.visible(getFromConfig(List.of(recipe.getIngredients().get(0)), recipe.getResultItem(registryAccess),
+            return FocusingRecipe.microwave(getFromConfig(List.of(recipe.getIngredients().get(0)), recipe.getResultItem(registryAccess),
                     Items.CHARCOAL.getDefaultInstance(), COConfigs.server().recipes.focusingSmokingFailedOutputProbability.getF(), FocusingRecipeParams.id(recipe, BeamTypeCondition.MICROWAVE)));
 
             //FocusingRecipe.microwave(new FocusingRecipeParams(recipe.getIngredients().get(0), new ProcessingOutput(recipe.getResultItem(registryAccess), 1F), FocusingRecipeParams.id(recipe, BeamTypeCondition.MICROWAVE)));
@@ -190,13 +190,9 @@ public class FocusingRecipeParams extends ProcessingRecipeBuilder.ProcessingReci
             return recipePredicate;
         }
 
-        public static void initialize(Level level){
-            if(level != null){
-                initializeRecipes(level);
-            }
-        }
+
         public static void initializeRecipes(Level level){
-            if(!RECIPES.isEmpty()) return;
+            if(!RECIPES.isEmpty()) RECIPES.clear();
             Arrays.stream(BeamTypeConditionProfile.values()).forEach(b -> {
                 level.getRecipeManager().getRecipes().forEach(recipe -> {
                     if (b.recipePredicate.test(recipe)) {

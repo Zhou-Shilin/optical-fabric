@@ -5,9 +5,8 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollOptionBehaviour;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.VecHelper;
+import net.createmod.catnip.lang.Lang;
+import net.createmod.catnip.math.VecHelper;
 import net.lpcamors.optical.COMod;
 import net.lpcamors.optical.blocks.IBeamSource;
 import net.lpcamors.optical.data.COLang;
@@ -173,16 +172,16 @@ public class OpticalSourceBlockEntity extends KineticBlockEntity implements IBea
 
         if(Math.abs(this.getSpeed()) > 0){
             BeamHelper.BeamType beamType = this.getInitialBeamProperties().getType();
-            Lang.text("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.beam_type")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
-            Lang.text("").add(COLang.Prefixes.CREATE.translate(beamType.getDescriptionId()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
-            Lang.text("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.propagation_range")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
-            Lang.text("").add(Lang.text(" "+beamType.getRange()+" blocks").style(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
+            Lang.builder("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.beam_type")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
+            Lang.builder("").add(COLang.Prefixes.CREATE.translate(beamType.getDescriptionId()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
+            Lang.builder("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.propagation_range")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
+            Lang.builder("").add(Component.literal(" "+beamType.getRange()+" blocks").withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
         }
 
         BeamHelper.BeamPolarization beamPolarization = this.polarization.get();
 
-        Lang.text("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.polarization")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
-        Lang.text("").add(COLang.Prefixes.CREATE.translate(beamPolarization.getTranslationKey()).append(" " + beamPolarization.getsIcon()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
+        Lang.builder("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.polarization")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
+        Lang.builder("").add(COLang.Prefixes.CREATE.translate(beamPolarization.getTranslationKey()).append(" " + beamPolarization.getsIcon()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);
 
         return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 

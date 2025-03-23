@@ -1,13 +1,12 @@
 package net.lpcamors.optical;
 
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.foundation.utility.VoxelShaper;
+import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class COShapes {
-
 
     public static final VoxelShape
             OPTICAL_RECEPTOR = shape(3, 0, 0, 13, 2, 16)

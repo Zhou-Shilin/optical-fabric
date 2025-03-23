@@ -79,12 +79,13 @@ public class OpticalSensorBlock extends DirectionalBlock implements IWrenchable,
         OpticalSensorBlockEntity be = this.getBlockEntity(iBeamSource.getLevel(), lastPos);
         if(be == null || state.getValue(FACING).equals(direction)) return;
 
-        BlockPos pos = be.getBlockPos();
+        if(state.getValue(MODE).equals(Mode.DIGITAL) && direction != beamProperties.direction.getOpposite()){
+            IBeamSource.propagateLinearBeamVar(iBeamSource, lastPos, beamProperties, lastIndex);
+        }
+        if(be.hasLevel() && be.getLevel().isClientSide) return;
         if(be.changeState(iBeamSource.getBlockPos(), beamProperties)){
-            iBeamSource.addDependent(pos);
-            if(state.getValue(MODE).equals(Mode.DIGITAL) && direction != beamProperties.direction.getOpposite()){
-                IBeamSource.propagateLinearBeamVar(iBeamSource, lastPos, beamProperties, lastIndex);
-            }
+            iBeamSource.addDependent(be.getBlockPos());
+
         }
 
     }

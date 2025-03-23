@@ -1,23 +1,35 @@
 package net.lpcamors.optical.ponder;
 
-import com.simibubi.create.foundation.ponder.PonderRegistry;
-import com.simibubi.create.foundation.ponder.PonderTag;
+import com.simibubi.create.AllBlocks;
+import com.tterrag.registrate.util.entry.RegistryEntry;
+import net.createmod.catnip.platform.CatnipServices;
+import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;
+import net.createmod.ponder.foundation.PonderTag;
 import net.lpcamors.optical.COMod;
 import net.lpcamors.optical.blocks.COBlocks;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
 
 public class COPonderTags {
 
-    private static PonderTag create(String id) {
-        return new PonderTag(new ResourceLocation(COMod.ID, id));
-    }
+    public static final ResourceLocation OPTICALS = COMod.loc("opticals");
 
-    public static final PonderTag
-        OPTICALS = create("opticals").item(COBlocks.OPTICAL_SOURCE)
-            .defaultLang("Optical Components", "Components which work with optical beams.")
-            .addToIndex();
-    public static void initiate(){
-        PonderRegistry.TAGS.forTag(OPTICALS)
+
+    public static void register(PonderTagRegistrationHelper<ResourceLocation> helper) {
+
+        PonderTagRegistrationHelper<RegistryEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+
+        PonderTagRegistrationHelper<ItemLike> itemHelper = helper.withKeyFunction(
+                CatnipServices.REGISTRIES::getKeyOrThrow);
+
+        helper.registerTag(OPTICALS)
+                .addToIndex()
+                .item(COBlocks.OPTICAL_SOURCE.get(), true, false)
+                .title("Optical Components")
+                .description("Components which work with optical beams.")
+                .register();
+
+        HELPER.addToTag(OPTICALS)
                 .add(COBlocks.OPTICAL_SOURCE)
                 .add(COBlocks.THERMAL_OPTICAL_SOURCE)
                 .add(COBlocks.LIGHT_OPTICAL_RECEPTOR)
@@ -27,5 +39,6 @@ public class COPonderTags {
                 .add(COBlocks.POLARIZING_BEAM_SPLITTER_BLOCK)
                 .add(COBlocks.OPTICAL_SENSOR)
                 .add(COBlocks.BEAM_CONDENSER);
+
     }
 }

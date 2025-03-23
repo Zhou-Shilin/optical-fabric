@@ -2,9 +2,9 @@ package net.lpcamors.optical.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
-import com.simibubi.create.foundation.utility.AngleHelper;
+import net.createmod.catnip.math.AngleHelper;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.lpcamors.optical.COPartialModels;
 import net.lpcamors.optical.blocks.absorption_polarizing_filter.AbsorptionPolarizingFilter;
 import net.lpcamors.optical.blocks.absorption_polarizing_filter.AbsorptionPolarizingFilterBlockEntity;
@@ -23,7 +23,7 @@ public class AbsorptionPolarizingFilterRenderer extends SafeBlockEntityRenderer<
     protected void renderSafe(AbsorptionPolarizingFilterBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
         BlockState state = be.getBlockState();
         Direction direction = state.getValue(AbsorptionPolarizingFilter.FACING);
-        SuperByteBuffer filter = CachedBufferer.partial(COPartialModels.POLARIZING_FILTER, state);
+        SuperByteBuffer filter = CachedBuffers.partial(COPartialModels.POLARIZING_FILTER, state);
         BeamHelper.BeamPolarization beamPolarization = state.getValue(AbsorptionPolarizingFilter.POLARIZATION);
         if(beamPolarization != BeamHelper.BeamPolarization.RANDOM){
             rotateFilter(filter, (float) (beamPolarization.getAngle() * Math.PI / 4), direction).light(light).renderInto(ms, bufferSource.getBuffer(RenderType.translucent()));
@@ -36,9 +36,9 @@ public class AbsorptionPolarizingFilterRenderer extends SafeBlockEntityRenderer<
         float pivotX = 8F / 16f;
         float pivotY = 8f / 16f;
         float pivotZ = 8F / 16f;
-        buffer.rotateCentered(Direction.UP, (float) (AngleHelper.rad(AngleHelper.horizontalAngle(facing.getCounterClockWise())) - 1.5F * Math.PI));
+        buffer.rotateCentered((float) (AngleHelper.rad(AngleHelper.horizontalAngle(facing.getCounterClockWise())) - 1.5F * Math.PI), Direction.UP);
         buffer.translate(pivotX, pivotY, pivotZ);
-        buffer.rotate(Direction.EAST, angleRad);
+        buffer.rotate(angleRad, Direction.EAST);
         buffer.translate(-pivotX, -pivotY, -pivotZ);
         return buffer;
     }
