@@ -29,11 +29,11 @@ public class COBlocks {
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
                     .transform(TagGen.axeOrPickaxe())
+                    .transform(COCStress.setImpact(8.0))
                     .blockstate(BlockStateGen.horizontalBlockProvider(true))
                     .addLayer(() -> RenderType::cutoutMipped)
                     .item()
                     .transform(ModelGen.customItemModel())
-                    .transform(COCStress.setImpact(8.0))
                     .register();
 
     public static final BlockEntry<ThermalOpticalSourceBlock> THERMAL_OPTICAL_SOURCE =
@@ -41,11 +41,11 @@ public class COBlocks {
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
                     .transform(TagGen.axeOrPickaxe())
+                    .transform(COCStress.setImpact(16.0))
                     .blockstate(BlockStateGen.horizontalBlockProvider(true))
                     .addLayer(() -> RenderType::cutout)
                     .item()
                     .transform(ModelGen.customItemModel())
-                    .transform(COCStress.setImpact(16.0))
                     .register();
 
 
@@ -54,11 +54,11 @@ public class COBlocks {
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
                     .transform(TagGen.axeOrPickaxe())
+                    .transform(COCStress.setCapacity(8.0))
                     .blockstate(OpticalReceptorGenerator.LIGHT::generate)
                     .addLayer(() -> RenderType::cutoutMipped)
                     .item()
                     .transform(ModelGen.customItemModel())
-                    .transform(COCStress.setCapacity(8.0))
                     .register();
 
     public static final BlockEntry<OpticalReceptorBlock> HEAVY_OPTICAL_RECEPTOR =
@@ -66,11 +66,11 @@ public class COBlocks {
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
                     .transform(TagGen.axeOrPickaxe())
+                    .transform(COCStress.setCapacity(24.0))
                     .blockstate(OpticalReceptorGenerator.HEAVY::generate)
                     .addLayer(() -> RenderType::cutoutMipped)
                     .item()
                     .transform(ModelGen.customItemModel())
-                    .transform(COCStress.setCapacity(24.0))
                     .register();
 
 
@@ -133,11 +133,11 @@ public class COBlocks {
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.mapColor(MapColor.COLOR_PURPLE))
                     .transform(TagGen.axeOrPickaxe())
+                    .transform(COCStress.setImpact(4.0))
                     .blockstate(BlockStateGen.horizontalBlockProvider(true))
                     .addLayer(() -> RenderType::solid)
                     .item()
                     .transform(ModelGen.customItemModel())
-                    .transform(COCStress.setImpact(4.0))
                     .register();
     public static final BlockEntry<HologramSourceBlock> HOLOGRAM_SOURCE =
             CreateOptical.REGISTRATE.block("hologram_source", HologramSourceBlock::new)
