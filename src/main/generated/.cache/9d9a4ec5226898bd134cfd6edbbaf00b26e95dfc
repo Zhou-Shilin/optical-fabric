@@ -1,0 +1,3 @@
+// 1.20.1	2026-01-25T12:59:56.9800715	Create Optical/Tags for minecraft:block
+a4386c7c950c18b1c483fa8379bbb5da64d40837 data\create_optical\tags\blocks\beam\penetrable.json
+000faf58357d51ed8594301ba35303cbd3087729 data\create_optical\tags\blocks\beam\impenetrable.json

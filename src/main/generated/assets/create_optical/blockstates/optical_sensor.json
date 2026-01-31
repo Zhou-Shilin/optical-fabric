@@ -1,0 +1,160 @@
+{
+  "variants": {
+    "facing=down,lit=false,sensor_mode=color": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 180
+    },
+    "facing=down,lit=false,sensor_mode=digital": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 180
+    },
+    "facing=down,lit=false,sensor_mode=intensity": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 180
+    },
+    "facing=down,lit=true,sensor_mode=color": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 180
+    },
+    "facing=down,lit=true,sensor_mode=digital": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 180
+    },
+    "facing=down,lit=true,sensor_mode=intensity": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 180
+    },
+    "facing=east,lit=false,sensor_mode=color": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,lit=false,sensor_mode=digital": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,lit=false,sensor_mode=intensity": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,lit=true,sensor_mode=color": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,lit=true,sensor_mode=digital": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,lit=true,sensor_mode=intensity": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north,lit=false,sensor_mode=color": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90
+    },
+    "facing=north,lit=false,sensor_mode=digital": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90
+    },
+    "facing=north,lit=false,sensor_mode=intensity": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90
+    },
+    "facing=north,lit=true,sensor_mode=color": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90
+    },
+    "facing=north,lit=true,sensor_mode=digital": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90
+    },
+    "facing=north,lit=true,sensor_mode=intensity": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90
+    },
+    "facing=south,lit=false,sensor_mode=color": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,lit=false,sensor_mode=digital": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,lit=false,sensor_mode=intensity": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,lit=true,sensor_mode=color": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,lit=true,sensor_mode=digital": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,lit=true,sensor_mode=intensity": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up,lit=false,sensor_mode=color": {
+      "model": "create_optical:block/optical_sensor/block"
+    },
+    "facing=up,lit=false,sensor_mode=digital": {
+      "model": "create_optical:block/optical_sensor/block"
+    },
+    "facing=up,lit=false,sensor_mode=intensity": {
+      "model": "create_optical:block/optical_sensor/block"
+    },
+    "facing=up,lit=true,sensor_mode=color": {
+      "model": "create_optical:block/optical_sensor/block"
+    },
+    "facing=up,lit=true,sensor_mode=digital": {
+      "model": "create_optical:block/optical_sensor/block"
+    },
+    "facing=up,lit=true,sensor_mode=intensity": {
+      "model": "create_optical:block/optical_sensor/block"
+    },
+    "facing=west,lit=false,sensor_mode=color": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,lit=false,sensor_mode=digital": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,lit=false,sensor_mode=intensity": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,lit=true,sensor_mode=color": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,lit=true,sensor_mode=digital": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,lit=true,sensor_mode=intensity": {
+      "model": "create_optical:block/optical_sensor/block",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

@@ -1,13 +1,13 @@
 package net.lpcamors.optical.config;
 
-import com.simibubi.create.Create;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
+
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.createmod.catnip.config.ConfigBase;
 import net.createmod.catnip.platform.CatnipServices;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -31,12 +31,12 @@ public class COCStress extends ConfigBase {
 
     @Override
     public void registerAll(ForgeConfigSpec.Builder builder) {
-        builder.comment(".", COCStress.Comments.su, COCStress.Comments.impact)
+        builder.comment(".", Comments.su, Comments.impact)
                 .push("impact");
         DEFAULT_IMPACTS.forEach((id, value) -> this.impacts.put(id, builder.define(id.getPath(), value)));
         builder.pop();
 
-        builder.comment(".", COCStress.Comments.su, COCStress.Comments.capacity)
+        builder.comment(".", Comments.su, Comments.capacity)
                 .push("capacity");
         DEFAULT_CAPACITIES.forEach((id, value) -> this.capacities.put(id, builder.define(id.getPath(), value)));
         builder.pop();
@@ -67,8 +67,8 @@ public class COCStress extends ConfigBase {
 
     public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setImpact(double value) {
         return builder -> {
-            assertFromCreate(builder);
-            ResourceLocation id = COMod.loc(builder.getName());
+            assertFromMod(builder);
+            ResourceLocation id = CreateOptical.loc(builder.getName());
             DEFAULT_IMPACTS.put(id, value);
             return builder;
         };
@@ -76,16 +76,16 @@ public class COCStress extends ConfigBase {
 
     public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setCapacity(double value) {
         return builder -> {
-            assertFromCreate(builder);
-            ResourceLocation id = Create.asResource(builder.getName());
+            assertFromMod(builder);
+            ResourceLocation id = CreateOptical.loc(builder.getName());
             DEFAULT_CAPACITIES.put(id, value);
             return builder;
         };
     }
 
-    private static void assertFromCreate(BlockBuilder<?, ?> builder) {
-        if (!builder.getOwner().getModid().equals(COMod.ID)) {
-            throw new IllegalStateException("Non-Create blocks cannot be added to Create Optical's config.");
+    private static void assertFromMod(BlockBuilder<?, ?> builder) {
+        if (!builder.getOwner().getModid().equals(CreateOptical.ID)) {
+            throw new IllegalStateException("Non-Create Optical blocks cannot be added to Create Optical's config.");
         }
     }
 

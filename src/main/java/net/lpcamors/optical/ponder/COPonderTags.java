@@ -5,14 +5,14 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;
 import net.createmod.ponder.foundation.PonderTag;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.blocks.COBlocks;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
 
 public class COPonderTags {
 
-    public static final ResourceLocation OPTICALS = COMod.loc("opticals");
+    public static final ResourceLocation OPTICALS = CreateOptical.loc("opticals");
 
 
     public static void register(PonderTagRegistrationHelper<ResourceLocation> helper) {

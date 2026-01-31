@@ -3,7 +3,7 @@ package net.lpcamors.optical.recipes;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.blocks.optical_source.BeamHelper;
 import net.lpcamors.optical.config.COConfigs;
 import net.lpcamors.optical.data.IndexedEnum;
@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,7 +59,7 @@ public class FocusingRecipeParams extends ProcessingRecipeBuilder.ProcessingReci
         return p0;
     }
     static ResourceLocation id(Recipe<?> r, FocusingRecipeParams.BeamTypeCondition beamTypeCondition){
-        return new ResourceLocation(COMod.ID, r.getId().getPath() + "_focusing_" +beamTypeCondition.name().toLowerCase());
+        return new ResourceLocation(CreateOptical.ID, r.getId().getPath() + "_focusing_" +beamTypeCondition.name().toLowerCase());
     }
 
     public ResourceLocation getId() {

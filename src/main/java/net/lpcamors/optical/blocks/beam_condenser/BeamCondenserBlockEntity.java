@@ -5,7 +5,7 @@ import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.createmod.catnip.lang.Lang;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.blocks.IBeamReceiver;
 import net.lpcamors.optical.blocks.IBeamSource;
 import net.lpcamors.optical.blocks.optical_source.BeamHelper;
@@ -18,16 +18,23 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
 public class BeamCondenserBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation, IBeamSource {
+
+    // Explicit override to fix intermediary mapping issue with IBeamSource interface
+    @Override
+    public Level getLevel() {
+        return super.getLevel();
+    }
 
     private Map<Direction, IBeamReceiver.BeamSourceInstance> beamSourceInstanceMap = emptyMap();
 
@@ -150,7 +157,7 @@ public class BeamCondenserBlockEntity extends SmartBlockEntity implements IHaveG
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public AABB getRenderBoundingBox() {
         return INFINITE_EXTENT_AABB;
     }
@@ -197,15 +204,14 @@ public class BeamCondenserBlockEntity extends SmartBlockEntity implements IHaveG
             return;
         if (hasLevel())
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 16);
-        if (!isVirtual())
-            requestModelDataUpdate();
+        // Fabric: requestModelDataUpdate() is Forge-specific, block update already sent above
     }
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         @Nullable BeamHelper.BeamProperties beamProperties = this.getResultantBeamProperties(this.getBlockState().getValue(BeamCondenserBlock.FACING));
         if(beamProperties != null){
-            Lang.builder("tooltip").translate(COMod.ID +".gui.goggles.beam_properties").forGoggles(tooltip);
+            Lang.builder("tooltip").translate(CreateOptical.ID +".gui.goggles.beam_properties").forGoggles(tooltip);
 
             Lang.builder("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.beam_type")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
             Lang.builder("").add(COLang.Prefixes.CREATE.translate(beamProperties.beamType.getDescriptionId()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);

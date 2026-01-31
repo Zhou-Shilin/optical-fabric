@@ -30,8 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -872,7 +871,7 @@ public class COPonderScenes {
         FluidStack content = new FluidStack(Fluids.WATER
                 .getSource(), 1000);
         scene.world().modifyBlockEntity(source, ThermalOpticalSourceBlockEntity.class, be ->
-                be.internalTank.getPrimaryHandler().fill(content, IFluidHandler.FluidAction.EXECUTE));
+                be.internalTank.getPrimaryHandler().setFluid(content));
         scene.idle(10);
         scene.effects().indicateSuccess(source);
         scene.idle(10);
@@ -905,7 +904,7 @@ public class COPonderScenes {
         scene.idle(60);
 
         scene.world().modifyBlockEntity(source, ThermalOpticalSourceBlockEntity.class, be ->
-                be.internalTank.getPrimaryHandler().drain(1000, IFluidHandler.FluidAction.EXECUTE));
+                be.internalTank.getPrimaryHandler().setFluid(FluidStack.EMPTY));
         scene.idle(20);
 
         scene.world().setKineticSpeed(receptorSystemSelect, 0);
@@ -919,7 +918,7 @@ public class COPonderScenes {
         FluidStack content1 = new FluidStack(Fluids.LAVA
                 .getSource(), 1000);
         scene.world().modifyBlockEntity(source, ThermalOpticalSourceBlockEntity.class, be ->
-                be.internalTank.getPrimaryHandler().fill(content1, IFluidHandler.FluidAction.EXECUTE));
+                be.internalTank.getPrimaryHandler().setFluid(content1));
         scene.idle(10);
         scene.effects().indicateSuccess(source);
         scene.idle(10);

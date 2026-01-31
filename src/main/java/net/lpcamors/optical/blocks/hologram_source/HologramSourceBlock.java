@@ -34,10 +34,10 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.fml.DistExecutor;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
+import io.github.fabricators_of_create.porting_lib.models.generators.ModelFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -141,7 +141,7 @@ public class HologramSourceBlock extends HorizontalDirectionalBlock implements I
             return InteractionResult.SUCCESS;
         }
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+        EnvExecutor.runWhenOn(EnvType.CLIENT,
                 () -> () -> withBlockEntityDo(level, pos, be -> this.displayScreen(be, player)));
         return InteractionResult.SUCCESS;
     }
@@ -198,7 +198,7 @@ public class HologramSourceBlock extends HorizontalDirectionalBlock implements I
         }
     }
 
-    @OnlyIn(value = Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     protected void displayScreen(HologramSourceBlockEntity be, Player player) {
         if (player instanceof LocalPlayer)
             ScreenOpener.open(new HologramSourceScreen(be));

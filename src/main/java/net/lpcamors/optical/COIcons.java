@@ -11,13 +11,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.joml.Matrix4f;
 
 public class COIcons extends AllIcons {
 
-    public static final ResourceLocation ICON_ATLAS = new ResourceLocation(COMod.ID, "textures/gui/icons.png");
+    public static final ResourceLocation ICON_ATLAS = new ResourceLocation(CreateOptical.ID, "textures/gui/icons.png");
     private int iconX;
     private int iconY;
     private static int x = 0, y = -1;
@@ -46,18 +46,18 @@ public class COIcons extends AllIcons {
     }
 
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public void bind() {
         RenderSystem.setShaderTexture(0, ICON_ATLAS);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     @Override
     public void render(GuiGraphics graphics, int x, int y) {
         graphics.blit(ICON_ATLAS, x, y, 0, this.iconX, iconY, 16, 16, 256, 256);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public void render(PoseStack ms, MultiBufferSource buffer, int color) {
         VertexConsumer builder = buffer.getBuffer(RenderType.text(ICON_ATLAS));
         Matrix4f matrix = ms.last().pose();
@@ -79,7 +79,7 @@ public class COIcons extends AllIcons {
         vertex(builder, matrix, vec3, rgb, u2, v2, light);
         vertex(builder, matrix, vec4, rgb, u2, v1, light);
     }
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     private void vertex(VertexConsumer builder, Matrix4f matrix, Vec3 vec, Color rgb, float u, float v, int light) {
         builder.vertex(matrix, (float) vec.x, (float) vec.y, (float) vec.z)
                 .color(rgb.getRed(), rgb.getGreen(), rgb.getBlue(), 255)

@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.IExtensibleEnum;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -218,7 +217,7 @@ public class OpticalReceptorBlockEntity extends GeneratingKineticBlockEntity {
 
     }
 
-    public enum ReceptorType implements IExtensibleEnum {
+    public enum ReceptorType {
         SPEED("speed",
                 be -> {
                     return be.initialBeamProperties != null ? be.initialBeamProperties.getTheoreticalIntensitySpeed() : 0F;
@@ -253,10 +252,6 @@ public class OpticalReceptorBlockEntity extends GeneratingKineticBlockEntity {
 
         public @Nullable Float getCapacity(OpticalReceptorBlockEntity be) {
             return this.capacity.apply(be);
-        }
-
-        public static ReceptorType create(String name, String nameId, Function<OpticalReceptorBlockEntity, Float> speed, Function<OpticalReceptorBlockEntity, Float> capacity){
-            throw new IllegalStateException("Enum not extended");
         }
     }
 

@@ -18,6 +18,6 @@ public class CODamageTypes {
 
     }
     private static ResourceKey<DamageType> key(String name) {
-        return ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(COMod.ID, name));
+        return ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(CreateOptical.ID, name));
     }
 }

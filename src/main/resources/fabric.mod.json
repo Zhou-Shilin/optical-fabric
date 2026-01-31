@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "create_optical",
+  "version": "${version}",
+  "name": "Create Optical",
+  "description": "A Create addon all about rotational energy transfer by light. Adding more blocks and items such as optical source, receptor, sensor etc.",
+  "authors": [
+    "lpcamors"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/create-optical",
+    "issues": "https://github.com/luccaPossamai/optical/issues",
+    "sources": "https://github.com/luccaPossamai/optical"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.lpcamors.optical.CreateOptical"
+    ],
+    "client": [
+      "net.lpcamors.optical.CreateOpticalClient"
+    ],
+    "fabric-datagen": [
+      "net.lpcamors.optical.data.CODataGen"
+    ]
+  },
+  "mixins": [
+    "create_optical.mixins.json"
+  ],
+  "accessWidener": "create_optical.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*",
+    "create": ">=0.5.1"
+  },
+  "suggests": {
+    "jei": "*"
+  }
+}

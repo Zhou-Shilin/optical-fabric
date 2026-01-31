@@ -34,7 +34,7 @@ import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.StainedGlassPaneBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -120,7 +120,8 @@ public class HologramSourceRenderer  extends SafeBlockEntityRenderer<HologramSou
                 }
             }
 
-            bakedModel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(ms, bakedModel, itemDisplayContext, p_115146_);
+            // Apply model transformation for the given display context (Fabric equivalent of ForgeHooksClient.handleCameraTransforms)
+            bakedModel.getTransforms().getTransform(itemDisplayContext).apply(p_115146_, ms);
             ms.translate(-0.5F, -0.5F, -0.5F);
 
             TransformStack.of(ms)
@@ -129,21 +130,11 @@ public class HologramSourceRenderer  extends SafeBlockEntityRenderer<HologramSou
 
             ;//;
             if (!bakedModel.isCustomRenderer() && (!itemStack.is(Items.TRIDENT) || flag)) {
-                boolean flag1;
-                if (itemDisplayContext != ItemDisplayContext.GUI && !itemDisplayContext.firstPerson() && itemStack.getItem() instanceof BlockItem) {
-                    Block block = ((BlockItem)itemStack.getItem()).getBlock();
-                    flag1 = !(block instanceof HalfTransparentBlock) && !(block instanceof StainedGlassPaneBlock);
-                } else {
-                    flag1 = true;
-                }
-                for (var model : bakedModel.getRenderPasses(itemStack, flag1)) {
-
-                        this.renderModelLists(beamProperties, renderer, model, itemStack, light, overlay, ms, vertexConsumer, alpha);
-
-                }
-            } else {
-                net.minecraftforge.client.extensions.common.IClientItemExtensions.of(itemStack).getCustomRenderer().renderByItem(itemStack, itemDisplayContext, ms, buffer, light, overlay);
+                // In Fabric/vanilla, render the model directly instead of using Forge's getRenderPasses
+                this.renderModelLists(beamProperties, renderer, bakedModel, itemStack, light, overlay, ms, vertexConsumer, alpha);
             }
+            // TODO: Custom item renderer support removed - Fabric does not have IClientItemExtensions equivalent
+            // Original Forge code: IClientItemExtensions.of(itemStack).getCustomRenderer().renderByItem(...)
 
             ms.popPose();
         }
@@ -185,8 +176,15 @@ public class HologramSourceRenderer  extends SafeBlockEntityRenderer<HologramSou
     public void renderQuadList(BeamHelper.BeamProperties beamProperties, PoseStack p_115163_, VertexConsumer p_115164_, List<BakedQuad> p_115165_, ItemStack p_115166_, int p_115167_, int p_115168_, float alpha) {
         PoseStack.Pose posestack$pose = p_115163_.last();
         Vec3i color = beamProperties.color;
+        // Apply alpha to color channels since vanilla putBulkData doesn't have alpha parameter
+        float r = (float) (color.getX() / 255D) * alpha;
+        float g = (float) (color.getY() / 255D) * alpha;
+        float b = (float) (color.getZ() / 255D) * alpha;
+        // Vanilla putBulkData expects float[] for brightness per vertex (4 vertices per quad)
+        float[] brightness = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
+        int[] lightmap = new int[]{p_115167_, p_115167_, p_115167_, p_115167_};
         for(BakedQuad bakedquad : p_115165_) {
-            p_115164_.putBulkData(posestack$pose, bakedquad, (float) (color.getX() / 255D), (float) (color.getY() / 255D), (float) (color.getZ() / 255D), alpha, p_115167_, p_115168_, true);
+            p_115164_.putBulkData(posestack$pose, bakedquad, brightness, r, g, b, lightmap, p_115168_, true);
         }
 
     }

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.kinetics.base.ShaftVisual;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.instance.Instancer;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.OrientedInstance;
@@ -30,7 +31,7 @@ public class ReceptorVisual extends ShaftVisual<OpticalReceptorBlockEntity> impl
     }
 
     @Override
-    public void beginFrame(Context context) {
+    public void beginFrame(DynamicVisual.Context context) {
         setup();
         this.sensorInstances.forEach(this::rotateSensor);
     }

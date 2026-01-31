@@ -1,8 +1,7 @@
 package net.lpcamors.optical.data;
 
-import net.lpcamors.optical.COMod;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
+import net.lpcamors.optical.CreateOptical;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 
@@ -14,7 +13,7 @@ public class COTags {
         public static final TagKey<Block> IMPENETRABLE = mod("beam/impenetrable");
 
         private static TagKey<Block> mod(String path){
-            return BlockTags.create(new ResourceLocation(COMod.ID, path));
+            return TagKey.create(Registries.BLOCK, CreateOptical.loc(path));
         }
     }
 

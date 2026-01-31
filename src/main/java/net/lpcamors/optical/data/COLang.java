@@ -1,7 +1,7 @@
 package net.lpcamors.optical.data;
 
 import net.createmod.catnip.lang.LangBuilder;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -10,10 +10,11 @@ import javax.annotation.Nullable;
 
 public class COLang {
 
-    public static void initiate(){}
+    public static void register() {
+        // Static initialization registers all lang entries
+    }
 
     static {
-
         Prefixes.OPTICAL.register("gui.hologram_source.title", "Hologram Source");
         Prefixes.OPTICAL.register("gui.hologram_source.mode", "Rotation Mode");
         Prefixes.OPTICAL.register("gui.hologram_source.mode_clockwise", "Clockwise");
@@ -45,20 +46,20 @@ public class COLang {
         Prefixes.JEI.register("required_beam_type.gamma", "Require gamma rays");
         Prefixes.JEI.register("required_beam_type.none", "No beam type required");
 
-        Prefixes.CREATE.register("beam_type.type.radio","Radio Waves");
-        Prefixes.CREATE.register("beam_type.type.microwave","Microwaves");
-        Prefixes.CREATE.register("beam_type.type.visible","Visible Light");
-        Prefixes.CREATE.register("beam_type.type.gamma","Gamma Ray");
-        Prefixes.CREATE.register("beam_type.type.range","Block Range:");
-        Prefixes.CREATE.register("polarization.random","Random");
-        Prefixes.CREATE.register("polarization.vertical","Vertical");
-        Prefixes.CREATE.register("polarization.diagonal_positive","Positive Diagonal");
-        Prefixes.CREATE.register("polarization.horizontal","Horizontal");
-        Prefixes.CREATE.register("polarization.diagonal_negative","Negative Diagonal");
+        Prefixes.CREATE.register("beam_type.type.radio", "Radio Waves");
+        Prefixes.CREATE.register("beam_type.type.microwave", "Microwaves");
+        Prefixes.CREATE.register("beam_type.type.visible", "Visible Light");
+        Prefixes.CREATE.register("beam_type.type.gamma", "Gamma Ray");
+        Prefixes.CREATE.register("beam_type.type.range", "Block Range:");
+        Prefixes.CREATE.register("polarization.random", "Random");
+        Prefixes.CREATE.register("polarization.vertical", "Vertical");
+        Prefixes.CREATE.register("polarization.diagonal_positive", "Positive Diagonal");
+        Prefixes.CREATE.register("polarization.horizontal", "Horizontal");
+        Prefixes.CREATE.register("polarization.diagonal_negative", "Negative Diagonal");
 
         Prefixes.CREATIVE_TAB.register("co_base", "Optical Tab");
 
-        Prefixes.DEATH.register("gamma_ray",  "%1$s received a high dose of gamma rays");
+        Prefixes.DEATH.register("gamma_ray", "%1$s received a high dose of gamma rays");
     }
 
     public enum Prefixes {
@@ -71,38 +72,32 @@ public class COLang {
         DEATH("death.attack"),
         ;
         final @Nullable String pFix;
-        Prefixes(@Nullable String pFix){
+
+        Prefixes(@Nullable String pFix) {
             this.pFix = pFix;
         }
 
-        public void register(String s, String value){
-            if(this.pFix == null){
-                COMod.REGISTRATE.addRawLang(COMod.ID + "." + s, value);
+        public void register(String s, String value) {
+            if (this.pFix == null) {
+                CreateOptical.REGISTRATE.addRawLang(CreateOptical.ID + "." + s, value);
             } else {
-                COMod.REGISTRATE.addLang(this.pFix, new ResourceLocation(COMod.ID, s), value);
+                CreateOptical.REGISTRATE.addLang(this.pFix, new ResourceLocation(CreateOptical.ID, s), value);
             }
         }
 
-        public MutableComponent translate(String key, Object... args){
-            String s = this.pFix + "." + COMod.ID + "." + key;
-            if(this.pFix == null){
-                s = COMod.ID + "." + key;
+        public MutableComponent translate(String key, Object... args) {
+            String s = this.pFix + "." + CreateOptical.ID + "." + key;
+            if (this.pFix == null) {
+                s = CreateOptical.ID + "." + key;
             }
             return Component.translatable(s, resolveBuilders(args));
         }
-
-
     }
-
-
 
     public static Object[] resolveBuilders(Object[] args) {
         for (int i = 0; i < args.length; i++)
-            if (args[i]instanceof LangBuilder cb)
+            if (args[i] instanceof LangBuilder cb)
                 args[i] = cb.component();
         return args;
     }
-
-
-
 }

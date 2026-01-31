@@ -1,37 +1,38 @@
 package net.lpcamors.optical.blocks;
 
-import com.simibubi.create.AllBlockEntityTypes;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.blocks.absorption_polarizing_filter.AbsorptionPolarizingFilterBlockEntity;
+import net.lpcamors.optical.blocks.beam_condenser.BeamCondenserBlockEntity;
 import net.lpcamors.optical.blocks.beam_focuser.BeamFocuserBlockEntity;
 import net.lpcamors.optical.blocks.encased_mirror.EncasedMirrorBlockEntity;
 import net.lpcamors.optical.blocks.hologram_source.HologramSourceBlockEntity;
 import net.lpcamors.optical.blocks.optical_receptor.OpticalReceptorBlockEntity;
 import net.lpcamors.optical.blocks.optical_sensor.OpticalSensorBlockEntity;
-import net.lpcamors.optical.blocks.polarizing_beam_splitter_block.PolarizingBeamSplitterBlockEntity;
-import net.lpcamors.optical.blocks.beam_condenser.BeamCondenserBlockEntity;
 import net.lpcamors.optical.blocks.optical_source.OpticalSourceBlockEntity;
+import net.lpcamors.optical.blocks.polarizing_beam_splitter_block.PolarizingBeamSplitterBlockEntity;
 import net.lpcamors.optical.blocks.thermal_optical_source.ThermalOpticalSourceBlockEntity;
 import net.lpcamors.optical.renderers.*;
 import net.lpcamors.optical.visual.MirrorVisual;
 import net.lpcamors.optical.visual.ReceptorVisual;
 
-import static net.lpcamors.optical.COMod.REGISTRATE;
+import static net.lpcamors.optical.CreateOptical.REGISTRATE;
 
 
 public class COBlockEntities {
 
-    public static void initiate(){}
+    public static void register() {}
+
     public static final BlockEntityEntry<OpticalSourceBlockEntity> OPTICAL_SOURCE = REGISTRATE
             .blockEntity("optical_source", OpticalSourceBlockEntity::new)
-
             .visual(() -> OrientedRotatingVisual.backHorizontal(AllPartialModels.SHAFT_HALF))
             .validBlocks(COBlocks.OPTICAL_SOURCE)
             .renderer(() -> OpticalSourceRenderer::new)
             .register();
+
     public static final BlockEntityEntry<ThermalOpticalSourceBlockEntity> THERMAL_OPTICAL_SOURCE = REGISTRATE
             .blockEntity("thermal_optical_source", ThermalOpticalSourceBlockEntity::new)
             .visual(() -> OrientedRotatingVisual.backHorizontal(AllPartialModels.SHAFT_HALF))
@@ -46,12 +47,14 @@ public class COBlockEntities {
             .validBlocks(COBlocks.LIGHT_OPTICAL_RECEPTOR)
             .renderer(() -> OpticalReceptorRenderer::new)
             .register();
+
     public static final BlockEntityEntry<OpticalReceptorBlockEntity> CAPACITY_OPTICAL_RECEPTOR = REGISTRATE
             .blockEntity("optical_receptor_capacity", OpticalReceptorBlockEntity::capacity)
             .visual(() -> ReceptorVisual::new, false)
             .validBlocks(COBlocks.HEAVY_OPTICAL_RECEPTOR)
             .renderer(() -> OpticalReceptorRenderer::new)
             .register();
+
     public static final BlockEntityEntry<EncasedMirrorBlockEntity> ENCASED_MIRROR = REGISTRATE
             .blockEntity("encased_mirror", EncasedMirrorBlockEntity::new)
             .visual(() -> MirrorVisual::new, false)
@@ -71,11 +74,13 @@ public class COBlockEntities {
             .validBlocks(COBlocks.OPTICAL_SENSOR)
             .renderer(() -> OpticalSensorRenderer::new)
             .register();
+
     public static final BlockEntityEntry<PolarizingBeamSplitterBlockEntity> POLARIZING_BEAM_SPLITTER = REGISTRATE
             .blockEntity("polarizing_beam_splitter", PolarizingBeamSplitterBlockEntity::new)
             .validBlocks(COBlocks.POLARIZING_BEAM_SPLITTER_BLOCK)
             .renderer(() -> PolarizingBeamSplitterRenderer::new)
             .register();
+
     public static final BlockEntityEntry<BeamCondenserBlockEntity> BEAM_CONDENSER = REGISTRATE
             .blockEntity("beam_condenser", BeamCondenserBlockEntity::new)
             .validBlocks(COBlocks.BEAM_CONDENSER)
@@ -94,7 +99,4 @@ public class COBlockEntities {
             .validBlocks(COBlocks.HOLOGRAM_SOURCE)
             .renderer(() -> HologramSourceRenderer::new)
             .register();
-
-
-
 }

@@ -16,7 +16,7 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.CORecipeTypes;
 import net.lpcamors.optical.blocks.COBlocks;
 import net.lpcamors.optical.data.CODataGen;
@@ -48,7 +48,7 @@ import java.util.function.Supplier;
 @JeiPlugin
 public class CreateOpticalJei implements IModPlugin {
 
-    private static ResourceLocation ID = new ResourceLocation(COMod.ID, "jei_plugin");
+    private static ResourceLocation ID = new ResourceLocation(CreateOptical.ID, "jei_plugin");
 
     private List<CreateRecipeCategory<?>> categories = new ArrayList<>();
     public IIngredientManager ingredientManager;
@@ -131,7 +131,7 @@ public class CreateOpticalJei implements IModPlugin {
         }
 
         static ResourceLocation id(Recipe<?> r, FocusingRecipeParams.BeamTypeCondition beamTypeCondition){
-            return new ResourceLocation(COMod.ID, r.getId().getPath() + "_focusing_" +beamTypeCondition.name().toLowerCase());
+            return new ResourceLocation(CreateOptical.ID, r.getId().getPath() + "_focusing_" +beamTypeCondition.name().toLowerCase());
         }
 
         public CategoryBuilder<T> initializeCustomFocusingProcess(){
@@ -212,7 +212,7 @@ public class CreateOpticalJei implements IModPlugin {
             }
 
             CreateRecipeCategory.Info<T> info = new CreateRecipeCategory.Info<>(
-                    new mezz.jei.api.recipe.RecipeType<>(COMod.loc(name), recipeClass),
+                    new mezz.jei.api.recipe.RecipeType<>(CreateOptical.loc(name), recipeClass),
                     COLang.Prefixes.JEI.translate( name), background, icon, recipesSupplier, catalysts);
             CreateRecipeCategory<T> category = factory.create(info);
             return category;

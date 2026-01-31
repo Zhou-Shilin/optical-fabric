@@ -4,15 +4,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.createmod.catnip.gui.UIRenderHelper;
 import net.createmod.catnip.gui.element.ScreenElement;
 import net.createmod.catnip.theme.Color;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public enum COGuiTextures implements ScreenElement {
-    HOLOGRAM(COMod.ID, "hologram", 0,0, 188, 79),
-    HOLOGRAM_PLUS_SLOT(COMod.ID, "hologram", 0,79, 31, 18)
+HOLOGRAM(CreateOptical.ID, "hologram", 0,0, 188, 79),
+    HOLOGRAM_PLUS_SLOT(CreateOptical.ID, "hologram", 0,79, 31, 18)
     ;
 
     public static final int FONT_COLOR = 0x575F7A;
@@ -28,17 +28,17 @@ public enum COGuiTextures implements ScreenElement {
         this.startX = startX;
         this.startY = startY;
     }
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public void bind() {
         RenderSystem.setShaderTexture(0, location);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public void render(GuiGraphics graphics, int x, int y) {
         graphics.blit(location, x, y, startX, startY, width, height);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public void render(GuiGraphics graphics, int x, int y, Color c) {
         bind();
         UIRenderHelper.drawColoredTexture(graphics, c, x, y, startX, startY, width, height);

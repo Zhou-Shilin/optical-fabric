@@ -77,8 +77,7 @@ public class HologramSourceScreen extends AbstractSimiScreen {
         tag.putInt("ModeIndex", this.modeIndex);
         tag.putInt("Angle", this.angle);
         if(tag.equals(this.tag)) return;
-        COPackets.getChannel()
-                .sendToServer(new ConfigureHologramSourcePacket(be.getBlockPos(), tag));
+        COPackets.sendToServer(new ConfigureHologramSourcePacket(be.getBlockPos(), tag));
     }
 
     @Override
