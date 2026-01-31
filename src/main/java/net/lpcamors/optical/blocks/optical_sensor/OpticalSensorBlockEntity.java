@@ -4,7 +4,7 @@ import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.createmod.catnip.lang.Lang;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.blocks.IBeamReceiver;
 import net.lpcamors.optical.blocks.optical_source.BeamHelper;
 import net.lpcamors.optical.blocks.COBlocks;
@@ -94,7 +94,7 @@ public class OpticalSensorBlockEntity extends SmartBlockEntity implements IHaveG
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        Lang.builder("tooltip").translate(COMod.ID +".gui.goggles.optical_sensor").forGoggles(tooltip);
+        Lang.builder("tooltip").translate(CreateOptical.ID +".gui.goggles.optical_sensor").forGoggles(tooltip);
 
         Lang.builder("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.optical_sensor.mode")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);
         Lang.builder("").add(COLang.Prefixes.CREATE.translate(this.getBlockState().getValue(OpticalSensorBlock.MODE).getDescriptionId()).withStyle(ChatFormatting.AQUA)).forGoggles(tooltip, 1);

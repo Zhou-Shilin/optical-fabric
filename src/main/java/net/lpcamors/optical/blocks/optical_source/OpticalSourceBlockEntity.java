@@ -7,7 +7,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollOptionBehaviour;
 import net.createmod.catnip.lang.Lang;
 import net.createmod.catnip.math.VecHelper;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.blocks.IBeamSource;
 import net.lpcamors.optical.data.COLang;
 import net.minecraft.ChatFormatting;
@@ -18,12 +18,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class OpticalSourceBlockEntity extends KineticBlockEntity implements IBea
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
         this.polarization = new ScrollOptionBehaviour<>(BeamHelper.BeamPolarization.class,
-                Lang.builder("tooltip").translate(COMod.ID +".gui.behaviour.optical_source").component(), this, new PolarizationValueBoxTransform());
+                Lang.builder("tooltip").translate(CreateOptical.ID +".gui.behaviour.optical_source").component(), this, new PolarizationValueBoxTransform());
         behaviours.add(polarization);
     }
 
@@ -106,6 +107,16 @@ public class OpticalSourceBlockEntity extends KineticBlockEntity implements IBea
     }
 
     @Override
+    public Level getLevel() {
+        return super.getLevel();
+    }
+
+    @Override
+    public BlockPos getBlockPos() {
+        return super.getBlockPos();
+    }
+
+    @Override
     public boolean shouldRendererLaserBeam() {
         return this.getSpeed() != 0 && (this.getInitialBeamProperties() != null && this.getInitialBeamProperties().isVisible()) && !this.getBeamPropertiesMap().keySet().isEmpty();
     }
@@ -138,7 +149,7 @@ public class OpticalSourceBlockEntity extends KineticBlockEntity implements IBea
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public AABB getRenderBoundingBox() {
         return INFINITE_EXTENT_AABB;
     }
@@ -168,7 +179,7 @@ public class OpticalSourceBlockEntity extends KineticBlockEntity implements IBea
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        Lang.builder("tooltip").translate(COMod.ID +".gui.goggles.beam_properties").forGoggles(tooltip);
+        Lang.builder("tooltip").translate(CreateOptical.ID +".gui.goggles.beam_properties").forGoggles(tooltip);
 
         if(Math.abs(this.getSpeed()) > 0){
             BeamHelper.BeamType beamType = this.getInitialBeamProperties().getType();

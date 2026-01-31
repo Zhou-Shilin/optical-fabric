@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class COPartialModels {
 
-    public static void initiate(){}
+    public static void register() {}
 
     public static final PartialModel
             POLARIZING_FILTER = block("absorption_polarizing_filter/filter"),
@@ -21,7 +21,6 @@ public class COPartialModels {
             HOLOGRAM_BEAM = block("hologram_source/hologram_beam");
 
     private static PartialModel block(String path) {
-        return PartialModel.of(new ResourceLocation(COMod.ID, "block/" + path));
+        return PartialModel.of(new ResourceLocation(CreateOptical.ID, "block/" + path));
     }
-
 }

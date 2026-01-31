@@ -4,7 +4,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.INamedIc
 import com.simibubi.create.foundation.gui.AllIcons;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.lpcamors.optical.CODamageSources;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.COIcons;
 import net.lpcamors.optical.COUtils;
 import net.minecraft.core.Direction;

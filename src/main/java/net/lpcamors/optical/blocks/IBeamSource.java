@@ -8,7 +8,7 @@ import com.simibubi.create.foundation.render.RenderTypes;
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.COPartialModels;
 import net.lpcamors.optical.COUtils;
 import net.lpcamors.optical.blocks.absorption_polarizing_filter.AbsorptionPolarizingFilter;
@@ -28,8 +28,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BeaconBeamBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -97,10 +97,10 @@ public interface IBeamSource {
     }
 
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     class ClientSide {
 
-        public static final ResourceLocation LASER_BEAM_LOCATION = new ResourceLocation(COMod.ID, "textures/block/optical_source/optical_source_laser_beam.png");
+        public static final ResourceLocation LASER_BEAM_LOCATION = new ResourceLocation(CreateOptical.ID, "textures/block/optical_source/optical_source_laser_beam.png");
         static final RenderType LASER_BEAM_RENDER_TYPE = RenderType.entityTranslucentEmissive(LASER_BEAM_LOCATION, true);
 
         @Deprecated

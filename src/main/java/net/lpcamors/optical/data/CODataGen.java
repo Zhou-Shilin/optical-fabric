@@ -1,57 +1,53 @@
 package net.lpcamors.optical.data;
 
-import com.simibubi.create.AllKeys;
-import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.Create;
-import com.simibubi.create.foundation.advancement.AllAdvancements;
-import com.simibubi.create.foundation.ponder.CreatePonderPlugin;
 import com.tterrag.registrate.providers.ProviderType;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import net.createmod.ponder.foundation.PonderIndex;
-import net.createmod.ponder.foundation.registration.PonderLocalization;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CODamageTypes;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.ponder.COPonderPlugin;
-import net.lpcamors.optical.ponder.COPonderTags;
+import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.DataProvider;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-public class CODataGen {
+public class CODataGen implements DataGeneratorEntrypoint {
 
-    public static void dataGen(GatherDataEvent event){
-        //addExtraRegistrateData();
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-        if (event.includeServer()) {
-            COEntriesProvider generatedEntriesProvider = new COEntriesProvider(output, lookupProvider);
-            generator.addProvider(true, new COBlockTagsProvider(output, lookupProvider, existingFileHelper));
-            generator.addProvider(true, generatedEntriesProvider);
-            generator.addProvider(true, new COSequencedAssemblyRecipeProvider(output));
-            generator.addProvider(true, new FocusingRecipeGen(output));
+    @Override
+    public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
+        FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
+        
+        // Create ExistingFileHelper for Registrate
+        ExistingFileHelper existingFileHelper = ExistingFileHelper.withResourcesFromArg();
+        
+        // Add Registrate data providers for blockstates, models, lang, etc.
+        CreateOptical.REGISTRATE.setupDatagen(pack, existingFileHelper);
+        
+        // Add custom providers
+        pack.addProvider(COBlockTagsProvider::new);
+        pack.addProvider(COEntriesProvider::new);
+        pack.addProvider((DataProvider.Factory<COSequencedAssemblyRecipeProvider>) COSequencedAssemblyRecipeProvider::new);
+        pack.addProvider((DataProvider.Factory<FocusingRecipeGen>) FocusingRecipeGen::new);
 
-        }
-        COMod.REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
+        // Register ponder lang
+        CreateOptical.REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
             BiConsumer<String, String> langConsumer = provider::add;
-
-            //provideDefaultLang("interface", langConsumer);
-            //provideDefaultLang("tooltips", langConsumer);
             providePonderLang(langConsumer);
         });
-
     }
-
 
     private static void providePonderLang(BiConsumer<String, String> consumer) {
         PonderIndex.addPlugin(new COPonderPlugin());
-
-        PonderIndex.getLangAccess().provideLang(COMod.ID, consumer);
+        PonderIndex.getLangAccess().provideLang(CreateOptical.ID, consumer);
     }
 
-
+    @Override
+    public void buildRegistry(RegistrySetBuilder registryBuilder) {
+        registryBuilder.add(Registries.DAMAGE_TYPE, CODamageTypes::bootstrap);
+    }
 }

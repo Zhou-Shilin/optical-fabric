@@ -14,7 +14,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringB
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.createmod.catnip.lang.LangBuilder;
 import net.createmod.catnip.math.VecHelper;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.blocks.IBeamReceiver;
 import net.lpcamors.optical.blocks.optical_source.BeamHelper;
 import net.lpcamors.optical.data.COLang;
@@ -29,8 +29,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -234,7 +234,7 @@ public class BeamFocuserBlockEntity extends KineticBlockEntity implements IHaveG
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        new LangBuilder("create").translate(COMod.ID +".gui.goggles.beam_properties").forGoggles(tooltip);
+        new LangBuilder("create").translate(CreateOptical.ID +".gui.goggles.beam_properties").forGoggles(tooltip);
 
         if(this.beamSourceInstance != null && this.beamSourceInstance.optionalBeamProperties().isPresent()){
             CreateLang.text("").add(COLang.Prefixes.CREATE.translate(("gui.goggles.beam_type")).withStyle(ChatFormatting.GRAY)).forGoggles(tooltip);

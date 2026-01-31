@@ -9,7 +9,7 @@ public class COCClient extends ConfigBase {
 
     @Override
     public String getName() {
-        return "optical-server";
+        return "optical-client";
     }
 
     private static class Comments {

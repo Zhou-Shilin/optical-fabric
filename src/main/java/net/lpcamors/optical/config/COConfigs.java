@@ -1,21 +1,17 @@
 package net.lpcamors.optical.config;
 
-
 import com.simibubi.create.api.stress.BlockStressValues;
+import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.createmod.catnip.config.ConfigBase;
+import net.lpcamors.optical.CreateOptical;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class COConfigs {
 
     private static final Map<ModConfig.Type, ConfigBase> CONFIGS = new EnumMap<>(ModConfig.Type.class);
@@ -23,12 +19,14 @@ public class COConfigs {
     private static COCServer server;
     private static COCClient client;
 
-    public static COCServer server(){
+    public static COCServer server() {
         return server;
     }
-    public static COCClient client(){
+
+    public static COCClient client() {
         return client;
     }
+
     private static <T extends ConfigBase> T register(Supplier<T> factory, ModConfig.Type side) {
         Pair<T, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(builder -> {
             T config = factory.get();
@@ -42,34 +40,16 @@ public class COConfigs {
         return config;
     }
 
-    public static void register(ModLoadingContext context) {
+    public static void register() {
         server = register(COCServer::new, ModConfig.Type.SERVER);
         client = register(COCClient::new, ModConfig.Type.CLIENT);
 
-        for (Map.Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
-            context.registerConfig(pair.getKey(), pair.getValue().specification);
+        for (Map.Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet()) {
+            ForgeConfigRegistry.INSTANCE.register(CreateOptical.ID, pair.getKey(), pair.getValue().specification);
+        }
 
         COCStress stress = server().kinetics.stressValues;
         BlockStressValues.IMPACTS.registerProvider(stress::getImpact);
         BlockStressValues.CAPACITIES.registerProvider(stress::getCapacity);
     }
-
-    @SubscribeEvent
-    public static void onLoad(ModConfigEvent.Loading event) {
-        for (ConfigBase config : CONFIGS.values())
-            if (config.specification == event.getConfig()
-                    .getSpec())
-                config.onLoad();
-    }
-
-    @SubscribeEvent
-    public static void onReload(ModConfigEvent.Reloading event) {
-        for (ConfigBase config : CONFIGS.values())
-            if (config.specification == event.getConfig()
-                    .getSpec())
-                config.onReload();
-    }
-
-
 }
-

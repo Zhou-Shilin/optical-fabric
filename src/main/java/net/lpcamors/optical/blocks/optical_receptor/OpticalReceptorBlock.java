@@ -4,7 +4,7 @@ import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.foundation.block.IBE;
 import net.lpcamors.optical.COIcons;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.blocks.IBeamReceiver;
 import net.lpcamors.optical.blocks.COBlockEntities;
 import net.lpcamors.optical.blocks.IBeamSource;
@@ -55,9 +55,9 @@ public class OpticalReceptorBlock extends DirectionalAxisKineticBlock implements
 
 
     @Override
-    public void onBlockStateChange(LevelReader level, BlockPos pos, BlockState oldState, BlockState newState) {
-        super.onBlockStateChange(level, pos, oldState, newState);
-        if(newState.is(this)){
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if(state.is(this) && !oldState.is(this)){
             if(level.getBlockEntity(pos) instanceof OpticalReceptorBlockEntity be){
                 be.updateDirectionMap();
             }
@@ -215,7 +215,7 @@ public class OpticalReceptorBlock extends DirectionalAxisKineticBlock implements
 
         @Override
         public String getSerializedName() {
-            return COMod.ID + ".gear_heaviness." + this.name().toLowerCase(Locale.ROOT);
+            return CreateOptical.ID + ".gear_heaviness." + this.name().toLowerCase(Locale.ROOT);
         }
     }
 

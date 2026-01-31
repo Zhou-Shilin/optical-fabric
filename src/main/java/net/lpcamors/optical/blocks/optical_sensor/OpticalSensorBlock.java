@@ -2,7 +2,7 @@ package net.lpcamors.optical.blocks.optical_sensor;
 
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.lpcamors.optical.COShapes;
 import net.lpcamors.optical.COUtils;
 import net.lpcamors.optical.blocks.IBeamReceiver;

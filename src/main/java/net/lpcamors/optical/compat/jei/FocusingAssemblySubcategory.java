@@ -2,7 +2,7 @@ package net.lpcamors.optical.compat.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
-import com.simibubi.create.compat.jei.category.sequencedAssembly.SequencedAssemblySubCategory;
+import com.simibubi.create.compat.jei.category.sequencedAssembly.JeiSequencedAssemblySubCategory;
 import com.simibubi.create.content.processing.sequenced.SequencedRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
@@ -11,7 +11,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.lpcamors.optical.recipes.AnimatedFocus;
 import net.minecraft.client.gui.GuiGraphics;
 
-public class FocusingAssemblySubcategory extends SequencedAssemblySubCategory {
+public class FocusingAssemblySubcategory extends JeiSequencedAssemblySubCategory {
 
     private final AnimatedFocus focus = new AnimatedFocus(false);
 

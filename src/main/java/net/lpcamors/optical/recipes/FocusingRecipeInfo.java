@@ -1,7 +1,7 @@
 package net.lpcamors.optical.recipes;
 
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
-import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.CreateOptical;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -14,7 +14,7 @@ public class FocusingRecipeInfo implements IRecipeTypeInfo {
 
 
     public FocusingRecipeInfo(String name, SequencedAssemblyFocusingRecipeSerializer serializer, RecipeType<FocusingRecipe> type){
-        this.id = new ResourceLocation(COMod.ID, "focusing_"+name);
+        this.id = new ResourceLocation(CreateOptical.ID, "focusing_"+name);
         this.serializer = serializer;
         this.type = type;
     }

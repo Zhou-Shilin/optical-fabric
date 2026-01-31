@@ -1,7 +1,7 @@
 package net.lpcamors.optical.recipes;
 
 import com.google.gson.JsonObject;
-import com.simibubi.create.compat.jei.category.sequencedAssembly.SequencedAssemblySubCategory;
+import com.simibubi.create.compat.recipeViewerCommon.SequencedAssemblySubCategoryType;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
@@ -9,18 +9,17 @@ import com.simibubi.create.content.processing.sequenced.IAssemblyRecipe;
 import net.lpcamors.optical.CORecipeTypes;
 import net.lpcamors.optical.blocks.COBlocks;
 import net.lpcamors.optical.blocks.beam_focuser.BeamFocuserBlockEntity;
-import net.lpcamors.optical.compat.jei.FocusingAssemblySubcategory;
+import net.lpcamors.optical.compat.COSubCategoryTypes;
 import net.lpcamors.optical.data.COLang;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
+import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 public class FocusingRecipe extends ProcessingRecipe<RecipeWrapper> implements IAssemblyRecipe {
 
@@ -86,8 +85,8 @@ public class FocusingRecipe extends ProcessingRecipe<RecipeWrapper> implements I
     }
 
     @Override
-    public Supplier<Supplier<SequencedAssemblySubCategory>> getJEISubCategory() {
-        return () -> FocusingAssemblySubcategory::new;
+    public SequencedAssemblySubCategoryType getJEISubCategory() {
+        return COSubCategoryTypes.FOCUSING;
     }
     @Override
     public boolean matches(RecipeWrapper p_44002_, Level p_44003_) {

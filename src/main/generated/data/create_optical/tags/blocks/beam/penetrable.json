@@ -1,0 +1,92 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:air",
+    "minecraft:light",
+    "minecraft:tripwire",
+    "minecraft:redstone_wire",
+    "minecraft:water",
+    "minecraft:repeater",
+    "minecraft:comparator",
+    {
+      "id": "#minecraft:all_hanging_signs",
+      "required": false
+    },
+    {
+      "id": "#minecraft:all_signs",
+      "required": false
+    },
+    {
+      "id": "#minecraft:banners",
+      "required": false
+    },
+    {
+      "id": "#minecraft:slabs",
+      "required": false
+    },
+    {
+      "id": "#minecraft:wool_carpets",
+      "required": false
+    },
+    {
+      "id": "#minecraft:buttons",
+      "required": false
+    },
+    {
+      "id": "#minecraft:pressure_plates",
+      "required": false
+    },
+    {
+      "id": "#minecraft:wooden_trapdoors",
+      "required": false
+    },
+    {
+      "id": "#minecraft:candles",
+      "required": false
+    },
+    {
+      "id": "#minecraft:climbable",
+      "required": false
+    },
+    {
+      "id": "#minecraft:fire",
+      "required": false
+    },
+    {
+      "id": "#minecraft:leaves",
+      "required": false
+    },
+    {
+      "id": "#minecraft:flowers",
+      "required": false
+    },
+    {
+      "id": "#minecraft:coral_plants",
+      "required": false
+    },
+    {
+      "id": "#minecraft:saplings",
+      "required": false
+    },
+    {
+      "id": "#minecraft:crops",
+      "required": false
+    },
+    {
+      "id": "#minecraft:rails",
+      "required": false
+    },
+    {
+      "id": "#minecraft:replaceable_by_trees",
+      "required": false
+    },
+    {
+      "id": "#c:glass_blocks",
+      "required": false
+    },
+    {
+      "id": "#c:glass_panes",
+      "required": false
+    }
+  ]
+}
