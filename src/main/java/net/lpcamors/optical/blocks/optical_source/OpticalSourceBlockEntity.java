@@ -112,6 +112,11 @@ public class OpticalSourceBlockEntity extends KineticBlockEntity implements IBea
     }
 
     @Override
+    public BlockPos getBlockPos() {
+        return super.getBlockPos();
+    }
+
+    @Override
     public boolean shouldRendererLaserBeam() {
         return this.getSpeed() != 0 && (this.getInitialBeamProperties() != null && this.getInitialBeamProperties().isVisible()) && !this.getBeamPropertiesMap().keySet().isEmpty();
     }

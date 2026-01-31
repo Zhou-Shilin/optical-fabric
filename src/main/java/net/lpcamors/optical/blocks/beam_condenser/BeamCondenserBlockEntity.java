@@ -36,6 +36,11 @@ public class BeamCondenserBlockEntity extends SmartBlockEntity implements IHaveG
         return super.getLevel();
     }
 
+    @Override
+    public BlockPos getBlockPos() {
+        return super.getBlockPos();
+    }
+
     private Map<Direction, IBeamReceiver.BeamSourceInstance> beamSourceInstanceMap = emptyMap();
 
     private Map<Pair<Vec3i, Vec3i>, BeamHelper.BeamProperties> beamPropertiesMap = new HashMap<>();
