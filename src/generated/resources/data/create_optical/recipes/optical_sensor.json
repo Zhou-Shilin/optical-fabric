@@ -3,13 +3,13 @@
   "category": "misc",
   "key": {
     "B": {
-      "tag": "forge:plates/brass"
+      "tag": "c:plates/brass"
     },
     "E": {
       "item": "create:electron_tube"
     },
     "S": {
-      "tag": "forge:stone"
+      "tag": "minecraft:stone_crafting_materials"
     }
   },
   "pattern": [
